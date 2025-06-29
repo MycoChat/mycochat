@@ -7,6 +7,8 @@ from openaccess_conversation_freestyle import get_conversation_graph, shorten_au
 from tool.search_dna import search_DNA, is_good_DNA_sequence, dna_search_tool
 from tool.search_species import search_SpeciesDescription, species_search_tool
 
+version = "r0.0630"
+
 available_functions: Dict[str, Callable] = {
     'search_DNA': search_DNA,
     'search_SpeciesDescription': search_SpeciesDescription,
@@ -108,6 +110,7 @@ def render_page():
     col1, col2 = st.columns([5, 1])  # Adjust the ratio as needed    
     with col1:
         st.title("MycoChat")
+        st.markdown(version)    
     with col2:
         st.image("https://avatars.githubusercontent.com/u/24915122", width=120)  
 
