@@ -13,7 +13,7 @@ from langchain_core.documents import Document
 from langgraph.graph import START, StateGraph
 from typing_extensions import List, TypedDict
 
-from openaccess_db import get_vectorstore, shorten_author_list, get_citations
+from openaccess_db import get_vectorstore, shorten_author_list, get_citations, retrieve_documents_and_rank
 
 import argparse
 
@@ -58,7 +58,8 @@ class State(TypedDict):
 
 # Define application steps
 def retrieve(state: State):
-    retrieved_docs = vector_store.similarity_search(state["question"], k=10)      
+    #retrieved_docs = vector_store.similarity_search(state["question"], k=10)      
+    retrieved_docs = retrieve_documents_and_rank(vector_store, state["question"], k=10)      
     return {"context": retrieved_docs}
 
 def generate(state: State):

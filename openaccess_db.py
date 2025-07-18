@@ -38,6 +38,26 @@ def get_vectorstore():
         )
     return vector_store
 
+def rerank(doc: Document, score: float) -> float:
+    """Rank the document based on its metadata and score."""
+    rank = doc.metadata.get("rank", 0)
+    year = doc.metadata.get("year", 0)
+    return score + rank + (year / 10000.0)
+
+def retrieve_documents_and_rank(vector_store, query: str, k: int = 10) -> List[Document]:
+    """Retrieve documents from the vector store based on a query."""    
+    results = vector_store.similarity_search_with_relevance_scores(query, k=k)
+    for doc, score in results:
+        print(f"{doc}\n{score}\n\n")
+    ranks = [rerank(doc, score) for doc, score in results]
+    docs = [doc for doc, _ in results]
+    sorted_docs = sorted(zip(ranks, docs), reverse=True)
+    print("\n\nSorted documents based on rank:\n")
+    for rank, doc in sorted_docs:
+        print(f"{doc}\n{rank}\n\n")
+    ranked_docs = [doc for _, doc in sorted_docs]
+    return ranked_docs
+
 def shorten_author_list(author: str) -> str:
     """Shorten the author list to a maximum of 3 authors."""
     authors = author.split(", ")
@@ -137,13 +157,16 @@ def read_one_file(file_path):
         return []
 
 if __name__ == "__main__":
-    csv_file = "openaccess_metadata.csv"
-    load_data(csv_file)
+    #csv_file = "openaccess_metadata.csv"
+    #load_data(csv_file)
 
     #print("Openaccess db fully loaded. Checking database...")
     #check_db()
 
     # testonly read one file to check its content
     #read_one_file("../data/openaccess_Duong/Studies_in_Mycology/Vol93Art1_Taxonomy_of_Aspergillus_section_Flavi_and_their_production_of_aflatoxins,_ochratoxins_and_other_mycotoxins.pdf")
+
+    vector_store = get_vectorstore()
+    retrieve_documents_and_rank(vector_store, "What is an extrolite?")
 
     
