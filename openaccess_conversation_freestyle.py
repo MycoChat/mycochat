@@ -83,7 +83,7 @@ def handle_question(graph, question: str):
     print('Sources:')    
     citations = get_citations(result['context'])
     for citation in citations:     
-        print(f" {shorten_author_list(citation['author'])}, {citation['title']}, {citation['year']}")     
+        print(f" {shorten_author_list(citation['author'])}, {citation['title']}, {citation['publication year']}")     
 
 def get_response(graph, question: str):    
     result = graph.invoke({"question": question})            

@@ -7,7 +7,7 @@ from openaccess_conversation_freestyle import get_conversation_graph, shorten_au
 from tool.search_dna import search_DNA, is_good_DNA_sequence, dna_search_tool
 from tool.search_species import search_SpeciesDescription, species_search_tool
 
-version = "r0.0630"
+version = "dev"
 
 available_functions: Dict[str, Callable] = {
     'search_DNA': search_DNA,
@@ -93,7 +93,7 @@ def get_dna_search_response(user_question, search_result):
 def compose_sources(sources):    
     citations = get_citations(sources)        
     s = "\n- ".join(
-        f"{shorten_author_list(citation['author'])}, {citation['title']}, {citation['year']}"
+        f"{shorten_author_list(citation['author'])}, {citation['title']}, {citation['publication year']}"
         for citation in citations)
     return "\n\n**Sources**:\n- " + s if s else ""
 

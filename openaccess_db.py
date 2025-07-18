@@ -10,7 +10,7 @@ import os
 os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
 import csv
 
-db_location = "./open_access_db"
+db_location = "./open_access_with_ranking_db"
 collection_name = "first_collection"
 pdf_directories = [
                    "../data/openaccess_Duong/Adv_Food_Mycology/", 
@@ -50,7 +50,7 @@ def get_citations(docs: List[Document]):
     citations = []
     files = set()
     for doc in docs:
-        source = doc.metadata["source"]
+        source = doc.metadata["title"]
         if source not in files:
             files.add(source)
             citations.append(doc.metadata)
@@ -100,19 +100,26 @@ def load_data(csv_path):
                 if not loader:
                     print(f"Error file not found {row[0]}")
                     continue
-                #print("Loading file: " + pdf_directory + row[0])
+                
                 data = loader.load()
+                title = row[1].strip()
+                author = row[2].strip()
+                year = int(row[3].strip())
+                journal = row[4].strip()
+                rank = int(row[5].strip())
+                #print(f'"Processing {row[0]} with title "{title}", author "{author}", year "{year}", journal "{journal}", rank {rank}"')
                 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-                chunks = text_splitter.split_documents(data)
+                chunks = text_splitter.split_documents(data)        
                 for chunk in chunks:
-                    chunk.metadata['file_name'] = row[0]
-                    chunk.metadata['title'] = row[1].strip()
-                    chunk.metadata['author'] = row[2].strip()
-                    chunk.metadata['year'] = row[3].strip()
-                    if len(row) > 4: chunk.metadata['journal'] = row[4].strip()
-                    #print("Chunk metadata:", chunk.metadata)            
+                    del(chunk.metadata['source'])
+                    chunk.metadata['title'] = title
+                    chunk.metadata['author'] = author
+                    chunk.metadata['publication year'] = year
+                    chunk.metadata['journal'] = journal
+                    chunk.metadata['rank'] = rank                            
                 vector_store.add_documents(chunks)
                 print("Added " + row[0])    
+                
             except Exception as e:      
                 print(f"Error processing {row[0]}: {e}")
 
@@ -130,20 +137,11 @@ def read_one_file(file_path):
         return []
 
 if __name__ == "__main__":
-    #csv_file = "openaccess_metadata_000_100.csv"
-    #csv_file = "openaccess_metadata_101_200.csv"
-    #csv_file = "openaccess_metadata_201_300.csv"
-    #csv_file = "openaccess_metadata_301_400.csv"
-    #csv_file = "openaccess_metadata_401_476.csv"
-    #csv_file = "openaccess_missing.csv"
-    
-    #check the csv file if the content is correct
-    #test_csv(csv_file)
+    csv_file = "openaccess_metadata.csv"
+    load_data(csv_file)
 
-    #load_data(csv_file)
-
-    print("Openaccess db fully loaded. Checking database...")
-    check_db()
+    #print("Openaccess db fully loaded. Checking database...")
+    #check_db()
 
     # testonly read one file to check its content
     #read_one_file("../data/openaccess_Duong/Studies_in_Mycology/Vol93Art1_Taxonomy_of_Aspergillus_section_Flavi_and_their_production_of_aflatoxins,_ochratoxins_and_other_mycotoxins.pdf")
