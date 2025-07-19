@@ -44,6 +44,11 @@ def rerank(doc: Document, score: float) -> float:
     year = doc.metadata.get("year", 0)
     return score + rank + (year / 10000.0)
 
+def retrieve_documents(vector_store, query: str, k: int = 10) -> List[Document]:
+    """Retrieve documents from the vector store based on a query."""    
+    return vector_store.similarity_search(query, k=k)
+
+
 def retrieve_documents_and_rank(vector_store, query: str, k: int = 10) -> List[Document]:
     """Retrieve documents from the vector store based on a query."""    
     results = vector_store.similarity_search_with_relevance_scores(query, k=k)
@@ -167,6 +172,6 @@ if __name__ == "__main__":
     #read_one_file("../data/openaccess_Duong/Studies_in_Mycology/Vol93Art1_Taxonomy_of_Aspergillus_section_Flavi_and_their_production_of_aflatoxins,_ochratoxins_and_other_mycotoxins.pdf")
 
     vector_store = get_vectorstore()
-    retrieve_documents_and_rank(vector_store, "What is an extrolite?")
+    retrieve_documents_and_rank(vector_store, "What is an extrolite?") #very weird snippets. should look into why this happens
 
     
