@@ -42,7 +42,9 @@ def rerank(doc: Document, score: float) -> float:
     """Rank the document based on its metadata and score."""
     rank = doc.metadata.get("rank", 0)
     year = doc.metadata.get("year", 0)
-    return score + rank + (year / 10000.0)
+    res = score + rank + (year / 10000.0)
+    #print(f"\n{score} + {rank} + ({year} / 10000.0) =  {res}\n")
+    return res
 
 def retrieve_documents(vector_store, query: str, k: int = 10) -> List[Document]:
     """Retrieve documents from the vector store based on a query."""    
@@ -51,16 +53,15 @@ def retrieve_documents(vector_store, query: str, k: int = 10) -> List[Document]:
 
 def retrieve_documents_and_rank(vector_store, query: str, k: int = 10) -> List[Document]:
     """Retrieve documents from the vector store based on a query."""    
-    results = vector_store.similarity_search_with_relevance_scores(query, k=k)
-    for doc, score in results:
-        print(f"{doc}\n{score}\n\n")
+    results = vector_store.similarity_search_with_relevance_scores(query, k=k)    
     ranks = [rerank(doc, score) for doc, score in results]
     docs = [doc for doc, _ in results]
-    sorted_docs = sorted(zip(ranks, docs), reverse=True)
-    print("\n\nSorted documents based on rank:\n")
-    for rank, doc in sorted_docs:
-        print(f"{doc}\n{rank}\n\n")
-    ranked_docs = [doc for _, doc in sorted_docs]
+    # Add index as tiebreaker to avoid comparing Document objects
+    sorted_docs = sorted(zip(ranks, range(len(docs)), docs), reverse=True, key=lambda x: x[0])
+    #print("\n\nSorted documents based on rank:\n")
+    #for rank, _, doc in sorted_docs:
+    #    print(f"{doc}\n{rank}\n\n")
+    ranked_docs = [doc for _, _, doc in sorted_docs]
     return ranked_docs
 
 def shorten_author_list(author: str) -> str:
