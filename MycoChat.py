@@ -7,6 +7,12 @@ from openaccess_conversation_freestyle import get_conversation_graph, shorten_au
 from tool.search_dna import search_DNA, is_good_DNA_sequence, dna_search_tool
 from tool.search_species import search_SpeciesDescription, species_search_tool
 
+tool_icon = """
+<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#3d5047">
+    <path d="M433-121q-63-2-119.5-15T214-170.5Q171-192 145.5-220T120-280q0 32 25.5 60t68.5 49.5q43 21.5 99.5 34.5T433-121Zm-50-205q-23-3-48-7.5t-49-11q-24-6.5-46-15.5t-40-19q18 10 40 19t46 15.5q24 6.5 49 11t48 7.5Zm97-274q88 0 178.5-25.5T760-679q-11-29-100.5-55T480-760q-91 0-178.5 25.5T200-679q15 29 104.5 54T480-600ZM120-280v-400q0-33 28.5-62t77.5-51q49-22 114.5-34.5T480-840q74 0 139.5 12.5T734-793q49 22 77.5 51t28.5 62q0 33-28.5 62T734-567q-49 22-114.5 34.5T480-520q-85 0-157-15t-123-44v101q34 31 82.5 48T383-406q17 2 27.5 14t10.5 29q0 16-11 27.5t-27 9.5q-47-5-97-18.5T200-379v99q12 23 72 43.5T434-206q17 2 27.5 15t10.5 30q0 17-11 29t-28 11q-63-2-119.5-15T214-170.5Q171-192 145.5-220T120-280Zm540 160q-75 0-127.5-52.5T480-300q0-75 52.5-127.5T660-480q75 0 127.5 52.5T840-300q0 26-7.5 50T812-204l80 80q11 11 11 28t-11 28q-11 11-28 11t-28-11l-80-80q-22 13-46 20.5t-50 7.5Zm0-80q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Z"/>
+</svg>
+"""
+
 version = "dev"
 
 available_functions: Dict[str, Callable] = {
@@ -25,7 +31,8 @@ tools=[species_search_tool, dna_search_tool]
 AVATARS = {
     "user": None, #"🧑‍🔬",
     "assistant": None, #"🤖",    
-    "tool": "🛠️",
+    #"tool": ":material/database:", # "🛠️",
+    "tool": tool_icon,
 }
    
 def get_conversation_response(user_question):
@@ -109,8 +116,8 @@ def render_page():
     st.set_page_config(page_title="MycoChat", page_icon=":book:")
     col1, col2 = st.columns([5, 1])  # Adjust the ratio as needed    
     with col1:
-        st.title("MycoChat")
-        st.markdown(version)    
+        st.markdown("<h1 style='color:#3d5047;'>MycoChat</h1>", unsafe_allow_html=True)
+        st.markdown(f"Version: {version}")    
     with col2:
         st.image("https://avatars.githubusercontent.com/u/24915122", width=120)  
 
@@ -129,13 +136,13 @@ def handle_search(search_key):
         user_question = "Identify DNA sequence."              
         search_result = str(search_DNA(search_key))                    
     else:
-        user_question = f"Search MycoBank for species: {search_key}"          #Aspergillus flavus
+        user_question = f"Species search: {search_key}"          #Aspergillus flavus
         search_result = str(search_SpeciesDescription(search_key))
 
     register_message("user", user_question)
     response = format_search_result(search_result)
     register_message("tool", response)       
-    st.sidebar.markdown(response)    
+    #st.sidebar.markdown(response)
 
 def try_using_tools(question):
     analysis = ollama.chat(
@@ -162,47 +169,26 @@ def try_using_tools(question):
 def handle_user_question(user_question):
     """Handle user input and generate a response."""
 
-    register_message("user", user_question)
-
-    (tool_results, need_RAG) = try_using_tools(user_question)   
+    register_message("user", user_question)    
     
-    if need_RAG:
-        result = get_conversation_response(user_question)
-        answer = result['answer'].content
-        hasNoRagAnswer = 'I found no answer' in answer
-        if hasNoRagAnswer:
-            RAG_response = answer            
-        else:
-            sources = compose_sources(result['context'])
-            RAG_response = f"{answer}\n\n{sources}"
+    result = get_conversation_response(user_question)
+    answer = result['answer'].content
+    hasNoRagAnswer = 'I found no answer' in answer
+    if hasNoRagAnswer:
+        RAG_response = answer            
     else:
-        RAG_response = None
+        sources = compose_sources(result['context'])
+        RAG_response = f"{answer}\n\n{sources}"    
 
-    if tool_results is None:
-        full_response = RAG_response
-    elif not tool_results:
-        full_response = f"No results found from MycoBank. \n\n" + (RAG_response if RAG_response else "")
-    else:    
-        tool_response = f"Here is the results from MycoBank:\n\n{format_search_result(str(tool_results))}\n\n" 
-        if RAG_response:
-            if hasNoRagAnswer:
-                full_response = f"{tool_response}\n\n{RAG_response}"
-            else:
-                full_response = f"{tool_response}\n\nAnd here is more information I found in my collection of research papers\n\n{RAG_response}"
-        else:
-            full_response = tool_response
-        
-    register_message("assistant", full_response)
-    #with st.chat_message("assistant", avatar=AVATARS["assistant"]):
-    #    st.markdown(full_response)        
-    #st.session_state.messages.append({"role": "assistant", "content": answer})
-
+    register_message("assistant", RAG_response)    
 
 def main():
     init_session_state()
     render_page()    
 
-    search_key = st.sidebar.text_input("DNA/Species search", key="sidebar_input", placeholder="Type DNA or species name here...")
+    st.sidebar.image(tool_icon, width=24)
+    st.sidebar.markdown("**DNA/Species search**")
+    search_key = st.sidebar.text_input("Enter a DNA sequence or species name here", key="sidebar_input", placeholder="Search key")
     search_button = st.sidebar.button("Go", key="sidebar_button")        
     
     if user_question := st.chat_input("Ask a question"):        
