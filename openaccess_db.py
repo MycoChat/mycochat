@@ -10,8 +10,13 @@ import os
 os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
 import csv
 
-db_location = "./open_access_with_ranking_db"
-collection_name = "first_collection"
+
+db_location = "./openaccess_curated_db"
+collection_name = "max_characters_1500"
+
+# no curation
+# db_location = "./open_access_with_ranking_db"
+# collection_name = "first_collection"
 pdf_directories = [
                    "../data/openaccess_Duong/Adv_Food_Mycology/", 
                    "../data/openaccess_Duong/Ant_Leeuwenhoek/",
@@ -149,18 +154,33 @@ def load_data(csv_path):
             except Exception as e:      
                 print(f"Error processing {row[0]}: {e}")
 
+import json
 def read_one_file(file_path):
     """Read a single file and return its content. for testing purposes."""
     try:
         loader = UnstructuredPDFLoader(file_path=file_path)
         data = loader.load()
-        print(data)
-        # text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-        # chunks = text_splitter.split_documents(data)
-        # return chunks
+        #print(data)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+        chunks = text_splitter.split_documents(data)        
+        print(chunks[0])
     except Exception as e:
         print(f"Error reading file {file_path}: {e}")
         return []
+
+def chunk_to_snippet(chunk, metadata):
+    """Convert a chunk to a Document with metadata."""
+    if "Table" in str(type(chunk)):        
+        text = chunk.metadata.text_as_html
+        metadata["chunk_type"] = "Table"
+    else:
+        text = chunk.text
+        metadata["chunk_type"] = "Text"
+
+    return Document(
+        page_content=text,
+        metadata=metadata
+    )
 
 if __name__ == "__main__":
     #csv_file = "openaccess_metadata.csv"
@@ -170,9 +190,8 @@ if __name__ == "__main__":
     #check_db()
 
     # testonly read one file to check its content
-    #read_one_file("../data/openaccess_Duong/Studies_in_Mycology/Vol93Art1_Taxonomy_of_Aspergillus_section_Flavi_and_their_production_of_aflatoxins,_ochratoxins_and_other_mycotoxins.pdf")
+    read_one_file("../data/openaccess_Duong/Studies_in_Mycology/Vol93Art1_Taxonomy_of_Aspergillus_section_Flavi_and_their_production_of_aflatoxins,_ochratoxins_and_other_mycotoxins.pdf")
 
-    vector_store = get_vectorstore()
-    retrieve_documents_and_rank(vector_store, "What is an extrolite?") #very weird snippets. should look into why this happens
+    #vector_store = get_vectorstore()
+    #retrieve_documents_and_rank(vector_store, "What is an extrolite?") #very weird snippets. should look into why this happens
 
-    
