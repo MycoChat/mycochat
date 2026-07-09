@@ -3,17 +3,16 @@ import ast
 import ollama
 from typing import Dict, Callable
 
-from mycollm.utils.conversation_freestyle import get_conversation_graph, shorten_author_list, get_citations, DB_COLLECTION_NAME, CHAT_MODEL
+from mycollm.utils.retrieve import get_vectorstore, shorten_author_list, get_citations
 from mycoid.tools.search_dna import search_DNA, is_good_DNA_sequence, dna_search_tool
-from mycobase.tools.search_species import search_SpeciesDescription, search_RelevantSpeciesDescription, species_search_tool
-
-tool_icon = """
-<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#3d5047">
-    <path d="M433-121q-63-2-119.5-15T214-170.5Q171-192 145.5-220T120-280q0 32 25.5 60t68.5 49.5q43 21.5 99.5 34.5T433-121Zm-50-205q-23-3-48-7.5t-49-11q-24-6.5-46-15.5t-40-19q18 10 40 19t46 15.5q24 6.5 49 11t48 7.5Zm97-274q88 0 178.5-25.5T760-679q-11-29-100.5-55T480-760q-91 0-178.5 25.5T200-679q15 29 104.5 54T480-600ZM120-280v-400q0-33 28.5-62t77.5-51q49-22 114.5-34.5T480-840q74 0 139.5 12.5T734-793q49 22 77.5 51t28.5 62q0 33-28.5 62T734-567q-49 22-114.5 34.5T480-520q-85 0-157-15t-123-44v101q34 31 82.5 48T383-406q17 2 27.5 14t10.5 29q0 16-11 27.5t-27 9.5q-47-5-97-18.5T200-379v99q12 23 72 43.5T434-206q17 2 27.5 15t10.5 30q0 17-11 29t-28 11q-63-2-119.5-15T214-170.5Q171-192 145.5-220T120-280Zm540 160q-75 0-127.5-52.5T480-300q0-75 52.5-127.5T660-480q75 0 127.5 52.5T840-300q0 26-7.5 50T812-204l80 80q11 11 11 28t-11 28q-11 11-28 11t-28-11l-80-80q-22 13-46 20.5t-50 7.5Zm0-80q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Z"/>
-</svg>
-"""
+from mycobase.tools.search_species import search_SpeciesDescription, species_search_tool
+from mycollm.conversation_graph import PrioritizedGraph
 
 version = "dev"
+DB_COLLECTION_NAME = "aspergillus_500_no_table_heading"
+#CHAT_MODEL = "llama3.2" 
+CHAT_MODEL = "gemma2:2b"
+
 
 available_functions: Dict[str, Callable] = {
     'search_DNA': search_DNA,
@@ -28,6 +27,11 @@ def needs_RAG_in_addition_to_tool(tool_name: str) -> bool:
 
 tools=[species_search_tool, dna_search_tool] 
 
+tool_icon = """
+<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#3d5047">
+    <path d="M433-121q-63-2-119.5-15T214-170.5Q171-192 145.5-220T120-280q0 32 25.5 60t68.5 49.5q43 21.5 99.5 34.5T433-121Zm-50-205q-23-3-48-7.5t-49-11q-24-6.5-46-15.5t-40-19q18 10 40 19t46 15.5q24 6.5 49 11t48 7.5Zm97-274q88 0 178.5-25.5T760-679q-11-29-100.5-55T480-760q-91 0-178.5 25.5T200-679q15 29 104.5 54T480-600ZM120-280v-400q0-33 28.5-62t77.5-51q49-22 114.5-34.5T480-840q74 0 139.5 12.5T734-793q49 22 77.5 51t28.5 62q0 33-28.5 62T734-567q-49 22-114.5 34.5T480-520q-85 0-157-15t-123-44v101q34 31 82.5 48T383-406q17 2 27.5 14t10.5 29q0 16-11 27.5t-27 9.5q-47-5-97-18.5T200-379v99q12 23 72 43.5T434-206q17 2 27.5 15t10.5 30q0 17-11 29t-28 11q-63-2-119.5-15T214-170.5Q171-192 145.5-220T120-280Zm540 160q-75 0-127.5-52.5T480-300q0-75 52.5-127.5T660-480q75 0 127.5 52.5T840-300q0 26-7.5 50T812-204l80 80q11 11 11 28t-11 28q-11 11-28 11t-28-11l-80-80q-22 13-46 20.5t-50 7.5Zm0-80q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Z"/>
+</svg>
+"""
 AVATARS = {
     "user": None, #"🧑‍🔬",
     "assistant": None, #"🤖",    
@@ -35,31 +39,25 @@ AVATARS = {
     "tool": tool_icon,
 }
    
+graph = PrioritizedGraph(model=CHAT_MODEL, vector_store=get_vectorstore(DB_COLLECTION_NAME))
+
 def get_conversation_response(user_question):
     """Handle user input and generate a response."""
 
     if st.session_state.conversation is None:  
-        st.session_state.conversation = get_conversation_graph()
+        st.session_state.conversation = graph
         st.session_state.messages = []        
 
     chat_history_str = ""
     for msg in st.session_state.messages:
         chat_history_str += f"{msg['role']}: {msg['content']}\n"
-
-    MycoBase_context=search_RelevantSpeciesDescription(user_question)
-    if (MycoBase_context is None) or (MycoBase_context==""):
-        MycoBase_context="Not an accepted species."
-    else:
-        MycoBase_context=f"It is an accepted species in MycoBase:\n{MycoBase_context}"
     
     input_data = {
         "question": user_question,
-        "chat_history": chat_history_str,
-        "dict_context": MycoBase_context		
+        "chat_history": chat_history_str		
     }
     
-    response = st.session_state.conversation.invoke(input_data)
-    
+    response = st.session_state.conversation.invoke(input_data)    
     return response
 
 def display_search_result(search_result):
@@ -152,7 +150,6 @@ def handle_search(search_key):
     register_message("user", user_question)
     response = format_search_result(search_result)
     register_message("tool", response)       
-    #st.sidebar.markdown(response)
 
 def try_using_tools(question):
     analysis = ollama.chat(
