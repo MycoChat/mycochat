@@ -13,14 +13,14 @@ from langchain_core.documents import Document
 from langgraph.graph import START, StateGraph
 from typing_extensions import List, TypedDict
 
-from openaccess_db import get_vectorstore, shorten_author_list, get_citations, retrieve_documents_and_rank
+from mycollm.openaccess_db import get_vectorstore, shorten_author_list, get_citations, retrieve_documents_and_rank
 
 import argparse
 
 def parse_args():
     parser = argparse.ArgumentParser(description="OpenAccess Conversation Freestyle")
     parser.add_argument("--model", type=str, default="llama3.2", help="Model name for ChatOllama")    
-    parser.add_argument("--k", type=str, default="10", help="Retrieval size (number of document chunks to retrieve)")    
+    parser.add_argument("--k", type=str, default="10", help="Retrieval size (number of document chunks to retrieve)")  
     return parser.parse_args()
 
 vector_store = get_vectorstore()
@@ -54,7 +54,8 @@ def format_docs_with_id(docs: List[Document]) -> str:
 class State(TypedDict):
     question: str
     context: List[Document]
-    answer: str
+    dict_context: str
+    answer: str	
 
 # Define application steps
 def retrieve(state: State):
@@ -63,9 +64,15 @@ def retrieve(state: State):
     return {"context": retrieved_docs}
 
 def generate(state: State):
-    #formatted_docs = format_docs_with_id(state["context"])
-    formatted_docs = "\n\n".join(doc.page_content for doc in state["context"])
-    messages = prompt.invoke({"question": state["question"], "context": formatted_docs})    
+    retrieved_docs = state["context"]
+    dict_context = state.get("dict_context", "")
+    if dict_context!="":
+        dict_doc = Document(
+        					page_content=dict_context,
+        					metadata={"title": "MycoChat's database","content_type": "database", "author": "Jos Houbraken & Duong Vu", "publication year": "2026"})
+        retrieved_docs.append(dict_doc)
+    formatted_docs = "\n\n".join(doc.page_content for doc in retrieved_docs)
+    messages = prompt.invoke({"question": state["question"], "context": formatted_docs})  	  
     response = llm.invoke(messages)    
     return {"answer": response}
 
@@ -79,9 +86,9 @@ def handle_question(graph, question: str):
     """Invoke the graph with a user question and display the result."""    
     
     result = graph.invoke({"question": question})        
-    print(f"Answer: {result['answer'].content}")    
+    #print(f"Answer: {result['answer'].content}")    
 
-    print('Sources:')    
+    #print('Sources:')    
     citations = get_citations(result['context'])
     for citation in citations:     
         print(f" {shorten_author_list(citation['author'])}, {citation['title']}, {citation['publication year']}")     

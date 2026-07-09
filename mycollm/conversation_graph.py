@@ -1,0 +1,165 @@
+from langgraph.graph import StateGraph, END
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.documents import Document
+from pydantic import BaseModel, Field
+from typing_extensions import List, TypedDict
+from langchain_ollama.chat_models import ChatOllama
+
+import os, sys
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+from mycobase.tools.search_species import search_RelevantSpeciesDescription_json, search_RelevantSpeciesDescription, species_search_tool
+
+system_prompt = (
+    "You are a scientific assistant answering questions using ONLY the provided research-paper snippets.\n\n"
+    "Rules:\n"
+    "1. Base your answer solely on the snippets below. Do NOT use prior or external "
+    "knowledge, and do not rely on what you may already know.\n"
+    "2. Do not guess or invent anything. Every species name, number, and reference "
+    "in your answer must appear in the snippets. If a detail is not in the snippets, "
+    "do not state it.\n"
+    "3. If the snippets do not contain enough information to answer the question, "
+    "reply with exactly this sentence and nothing else: "
+    "'I found no answer based on the paper collection'.\n"
+    "4. Answer only what is asked, concisely and precisely.\n\n"
+    "Snippets:\n{context}"
+)
+
+prompt = ChatPromptTemplate.from_messages(
+    [
+        ("system", system_prompt),
+        ("human", "{question}"),
+    ]
+)
+
+# Define state for application
+class State(TypedDict):
+    question: str
+    db_context: List[Document]
+    doc_context: List[Document]
+    context: List[Document]
+    answer: str
+
+
+class PrioritizedGraph:
+    def __init__(self, model: str, vector_store=None, with_searchSpecies=False):
+        """
+        Initialize the graph with parameterized LLM and data sources.
+        """
+        self.llm = ChatOllama(model=model)
+        self.vector_store = vector_store
+        
+        # Compile the graph immediately upon initialization
+        if with_searchSpecies: self.graph = self._build_graph()
+        else: self.graph = self._build_chain()
+
+    def _build_chain(self):          
+        workflow = StateGraph(State)        
+        workflow.add_node("retrieve_documents", self._retrieve_documents)
+        workflow.add_node("generate_answer", self._generate_answer)        
+        workflow.set_entry_point("retrieve_documents")
+        workflow.add_edge("retrieve_documents", "generate_answer")
+        workflow.add_edge("generate_answer", END)
+        return workflow.compile()
+
+    def _build_graph(self):
+        # Initialize the graph
+        workflow = StateGraph(State)
+
+        # Add your nodes
+        workflow.add_node("query_database", self._query_database)
+        workflow.add_node("retrieve_documents", self._retrieve_documents)
+        workflow.add_node("generate_answer", self._generate_answer)
+
+        # Set the entry point
+        workflow.set_entry_point("query_database")
+
+        # Add the conditional routing after the DB check
+        workflow.add_conditional_edges(
+            "query_database",
+            self._route_after_db,
+            {
+                "generate_answer": "generate_answer",
+                "retrieve_documents": "retrieve_documents"
+            }
+        )
+
+        # Connect the document retrieval fallback to the generator
+        workflow.add_edge("retrieve_documents", "generate_answer")
+
+        # End the graph after generating the answer
+        workflow.add_edge("generate_answer", END)
+        return workflow.compile()
+
+    # --- Nodes and Routing (Instance Methods) ---
+        
+    def _route_after_db(self, state: State) -> str:
+        # Check if the database provided a satisfactory answer
+        if state.get("db_context") is not None:
+            return "generate_answer"  # Skip documents, go straight to generation        
+        return "retrieve_documents"    # Fallback to documents
+
+
+    def _query_database(self, state: State):
+        question = state["question"]       
+        db_json = search_RelevantSpeciesDescription_json(question)
+        db_result = convert_to_string(db_json) if db_json else None 
+
+        if db_result and is_sufficient(self.llm, db_result, question):
+            print(f"Database context is sufficient to answer the question.")
+            dict_doc = [Document(
+                                page_content=db_result,
+                                metadata={"title": "MycoChat's database","content_type": "database", "author": "Jos Houbraken & Duong Vu", "publication year": "2026"})]
+            return {"db_context": dict_doc, "context": dict_doc}        
+        
+        return {"db_context": None}
+
+    def _retrieve_documents(self, state: State):
+        retrieved_docs = self.vector_store.similarity_search(state["question"], k=10)
+        return {"doc_context": retrieved_docs, "context": retrieved_docs}
+
+    def _generate_answer(self, state: State):
+        retrieved_docs = state["context"]    
+        formatted_docs = "\n\n".join(doc.page_content for doc in retrieved_docs)
+        messages = prompt.invoke({"question": state["question"], "context": formatted_docs})  	  
+        response = self.llm.invoke(messages)    
+        return {"answer": response}
+
+
+    # --- Public API ---
+    
+    def run(self, question: str):
+        """Helper method to invoke the compiled graph."""
+        initial_state = {
+            "question": question
+        }
+        return self.graph.invoke(initial_state)
+    
+    def invoke(self, initial_state):                
+        return self.graph.invoke(initial_state)
+
+
+def convert_to_string(db_json):    
+    if "Extrolites" in db_json:
+        name = db_json.pop("Species")
+        db_json["Extrolites produced by " + name] = db_json.pop("Extrolites")
+    return str(db_json)  
+
+# A small Pydantic model for the LLM judge node
+class SufficiencyCheck(BaseModel):
+    is_sufficient: bool = Field(description="True if DB context answers the question, False otherwise.")
+
+def is_sufficient(llm, db_result, question):
+    if not db_result:
+        return False
+
+    judge_llm = llm.with_structured_output(SufficiencyCheck)
+    
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", "You are an auditor. Evaluate if the provided Context is sufficient to completely answer the User Question without needing extra documents. Respond with True or False."),
+        ("user", "Question: {question}\nContext: {context}")
+    ])
+    
+    chain = prompt | judge_llm
+    result = chain.invoke({"question": question, "context": str(db_result)})
+    
+    return result.is_sufficient

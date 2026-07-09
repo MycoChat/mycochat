@@ -11,8 +11,12 @@ os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
 import csv
 
 
-db_location = "./openaccess_curated_db"
-collection_name = "max_characters_1500"
+db_location = "mycollm/db/openaccess_curated_db"
+# #collection_name = "max_characters_1500"
+collection_name = "max_characters_500"
+
+#db_location = "./test_chunking/test_db"
+#collection_name = f"q_01_size_500_raw"
 
 # no curation
 # db_location = "./open_access_with_ranking_db"

@@ -3,9 +3,9 @@ import ast
 import ollama
 from typing import Dict, Callable
 
-from openaccess_conversation_freestyle import get_conversation_graph, shorten_author_list, get_citations
-from tool.search_dna import search_DNA, is_good_DNA_sequence, dna_search_tool
-from tool.search_species import search_SpeciesDescription, species_search_tool
+from mycollm.utils.conversation_freestyle import get_conversation_graph, shorten_author_list, get_citations, DB_COLLECTION_NAME, CHAT_MODEL
+from mycoid.tools.search_dna import search_DNA, is_good_DNA_sequence, dna_search_tool
+from mycobase.tools.search_species import search_SpeciesDescription, search_RelevantSpeciesDescription, species_search_tool
 
 tool_icon = """
 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#3d5047">
@@ -37,8 +37,8 @@ AVATARS = {
    
 def get_conversation_response(user_question):
     """Handle user input and generate a response."""
-    
-    if st.session_state.conversation is None:        
+
+    if st.session_state.conversation is None:  
         st.session_state.conversation = get_conversation_graph()
         st.session_state.messages = []        
 
@@ -46,12 +46,20 @@ def get_conversation_response(user_question):
     for msg in st.session_state.messages:
         chat_history_str += f"{msg['role']}: {msg['content']}\n"
 
+    MycoBase_context=search_RelevantSpeciesDescription(user_question)
+    if (MycoBase_context is None) or (MycoBase_context==""):
+        MycoBase_context="Not an accepted species."
+    else:
+        MycoBase_context=f"It is an accepted species in MycoBase:\n{MycoBase_context}"
+    
     input_data = {
         "question": user_question,
-        "chat_history": chat_history_str
+        "chat_history": chat_history_str,
+        "dict_context": MycoBase_context		
     }
+    
     response = st.session_state.conversation.invoke(input_data)
-
+    
     return response
 
 def display_search_result(search_result):
@@ -85,7 +93,7 @@ def get_dna_search_response(user_question, search_result):
 
     result = str(search_result)
     response = ollama.chat(
-                model="llama3.2",
+                model=CHAT_MODEL,
                 messages=[
                     {"role": "user", "content": user_question},
                     {"role": "assistant", 
@@ -98,7 +106,9 @@ def get_dna_search_response(user_question, search_result):
     return response['message']['content']
 
 def compose_sources(sources):    
-    citations = get_citations(sources)        
+    print(sources)
+    citations = get_citations(sources)    
+    print(citations)    
     s = "\n- ".join(
         f"{shorten_author_list(citation['author'])}, {citation['title']}, {citation['publication year']}"
         for citation in citations)
@@ -117,7 +127,7 @@ def render_page():
     col1, col2 = st.columns([5, 1])  # Adjust the ratio as needed    
     with col1:
         st.markdown("<h1 style='color:#3d5047;'>MycoChat</h1>", unsafe_allow_html=True)
-        st.markdown(f"Version: {version}")    
+        st.markdown(f"Version: {version}. DB: {DB_COLLECTION_NAME}. Model: {CHAT_MODEL}.")    
     with col2:
         st.image("https://avatars.githubusercontent.com/u/24915122", width=120)  
 
@@ -146,7 +156,7 @@ def handle_search(search_key):
 
 def try_using_tools(question):
     analysis = ollama.chat(
-        model= 'llama3.2',
+        model= CHAT_MODEL,
         messages=[{'role': 'user', 'content': question}],
         tools=tools,
     )
@@ -179,7 +189,7 @@ def handle_user_question(user_question):
     else:
         sources = compose_sources(result['context'])
         RAG_response = f"{answer}\n\n{sources}"    
-
+    
     register_message("assistant", RAG_response)    
 
 def main():

@@ -1,0 +1,117 @@
+[
+{   "id": 1,
+    "Q": "Which mycotoxin is produced by Penicillium nordicum?",
+    "A": "Ochratoxin A.",
+    "In": "Cover CBS lab Man 2.pdf.md, page 320"
+},
+{
+    "id": 2,
+    "Q": "What is the primer sequence of Bt2a?",
+    "A": "GGT AAC CAA ATC GGT GCT GCT TTC",
+    "In": "Cover CBS lab Man 2.pdf.md, Table 18, page 418"
+},
+{
+    "id": 3,
+    "Q": "Why is correct species identification an important step in biological research?",
+    "A": "A correct name is vital for optimal communication and is the link between studies in various fields.",
+    "In": "Houbraken et al 2021 Microbiol Res Ann 10 01074-20.pdf.md, page 1"
+},
+{   
+    "id": 4,
+    "Q": "Which agar medium should be used for the enumeration of xerophilic fungi?",
+    "A": "Dichloran 18% glycerol agar (DG18) is the media of choice for the enumeration of xerophilic fungi from reduced moisture foods.",
+    "In": "Rico-Munoz et al 2019 Food Microbiol 81 51-62.pdf.md - page 53"
+},
+{
+    "id": 5,
+    "Q": "Is Aspergillus welwitschiae an accepted species?",
+    "A": "No, Aspergillus welwitschiae is not an accepted species."
+},
+{
+    "id": 6,
+    "Q": "What is the type strain of Aspergillus kalimae?",
+    "A": "DAOM 745800"
+},
+{
+    "id": 7,
+    "Q": "Which genera are classified in the family Trichocomaceae?",
+    "A": "Acidotalaromyces, Ascospirella, Rasamsonia, Sagenomella, Talaromyces, Thermomyces, Trichocoma",
+    "In": ""
+},
+{ 
+    "id": 8,
+    "Q": "How are xerophilic fungi defined?",
+    "A": "Xerophilic fungi are defined by the ability to grow under conditions of reduced water activity, i.e. to complete their life cycles on substrates that have been dried or concentrated, in the presence of high levels of soluble solids such as salts or sugars ",
+    "In": "Rico-Munoz et al 2019 Food Microbiol 81 51-62.pdf.md - page 52"
+},
+{
+    "id": 9,
+    "Q": "Which series are present in Aspergillus section Nigri?",
+    "A": "Series Carbonarii, Heteromorphi, Japonici, Nigri"
+},
+{
+    "id": 10,
+    "Q": "Which Aspergillus section Nidulantes grows at 50 °C?",
+    "A": "Aspergillus corrugatus, Aspergillus nidulans and Aspergillus spinulosporus",
+    "In": "Vol84Art1_Aspergillus-section-Nidulantes--formerly-Emericella---Polyp_2016_Studies-in-.pdf.md - Table 5 page 29"
+},
+{
+    "id": 11,
+    "Q": "What are distinguishing characters of Aspergillus jaipurensis?",
+    "A": "Aspergillus jaipurensis is characterized by large, purplish red ascospores, which can easily distinguish it from other species in section Nidulantes. distinguish it from other species in section Nidulantes.",
+    "In": "Vol84Art1_Aspergillus-section-Nidulantes--formerly-Emericella---Polyp_2016_Studies-in-.pdf.md -page 66"
+},
+{
+    "id": 12,
+    "Q": "Which extrolites are produced by Aspergillus mulundensis?",
+    "A": "Extrolites: deoxymulundocandin, dibenzofurans (asticolourins?), mulundocandin, emericellamides, sclerotiorins or similar azaphilones with the same UV spectra as sclerotiorins (sclerotiorins tentatively identified). emericellamides, sclerotiorins or similar azaphilones with the same UV spectra as sclerotiorins (sclerotiorins tentatively identified).",
+    "In": "Vol84Art1_Aspergillus-section-Nidulantes--formerly-Emericella---Polyp_2016_Studies-in-.pdf.md -page 75"
+},
+{
+    "id": 13,
+    "Q": "Give me the reference sequences of Aspergillus section Terrei as fasta file. Compile the fasta name as follows: starting with the species name, followed by the GenBank accession number and strain number",
+    "A": "A list of fasta files of Aspergillus section Terrei species is expected.",
+    "In": ""
+},
+{
+    "id": 14,
+    "Q": "In which section is Penicillium nucicola classified?",
+    "A": "Penicillium nucicola is classified in section Canescentia",
+    "In": "Visagie et al 2016 Persoonia 36 247-280.pdf.md - page 259"
+},
+{
+    "id": 15,
+    "Q": "What is the colony diameter on DG18 after 7 days incubation at 25 °C of Aspergillus cristatus?",
+    "A": "38-53 mm"
+},
+{
+    "id": 16,
+    "Q": "What is the main cause of azole resistance in Aspergillus fumigatus?",
+    "A": "",
+    "In": "Vol100Art1_Aspergillus-fumigatus-and-aspergillosis.pdf.md"
+},
+{
+    "id": 17,
+    "Q": "List the synonyms of Aspergillus alliaceus",
+    "A": "Petromyces alliaceus, Syncleistostroma alliaceum, Aspergillus alliaceus var. macrosterigmatus, Aspergillus albertensis and Petromyces albertensis",
+    "In": "Vol93Art1_Taxonomy_of_Aspergillus_section_Flavi_and_their_production_of_aflatoxins,_ochratoxins_and_other_mycotoxins.pdf.md - page 50"
+},
+{
+    "id": 18,
+    "Q": "Which 14 species are able to produce aflatoxin B1, B2, G1 and G2?",
+    "A": "Aspergillus aflatoxiformans, A. austwickii, A. cerealis, A. arachidicola, A. minisclerotigenes, A. mottae, A. luteovirescens, A. nomius, A. novoparasiticus, A. parasiticus, A. pseudocaelatus, A. pseudonomius, A. sergii and A. transmontanensis",
+    "In": "Vol93Art1_Taxonomy_of_Aspergillus_section_Flavi_and_their_production_of_aflatoxins,_ochratoxins_and_other_mycotoxins.pdf.md - page 1"
+},
+{
+    "id": 19,
+    "Q": "What are the DNA barcodes of Aspergillus ochraceoroseus?",
+    "A": "P ITS = EF661224; BenA = EF661113; CaM = EF661137; RPB2 = EF661074",
+    "In": ""
+},
+{
+    "id": 20,
+    "Q": "Which extrolites are produced by Aspergillus persii?",
+    "A": "Aspergamices, aspochracins, aurantiamin, cyclopenols, mellamide, mevinolin, neohydroxyaspergillic acids, ochratoxin (weak to absent) penicillic acid, petromurins, xanthomegnins"
+}
+
+]
