@@ -87,3 +87,5 @@ file:///F:/Research/mycro/data/Vol93Art1_Taxonomy_of_Aspergillus_section_Flavi_a
 
 2. ưu tiên tác giả và năm xuất bản khi lấy data
 --> nên thử dùng system prompt
+
+

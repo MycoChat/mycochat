@@ -10,8 +10,17 @@ import os
 os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
 import csv
 
-db_location = "./open_access_db"
-collection_name = "first_collection"
+
+db_location = "mycollm/db/openaccess_curated_db"
+# #collection_name = "max_characters_1500"
+collection_name = "max_characters_500"
+
+#db_location = "./test_chunking/test_db"
+#collection_name = f"q_01_size_500_raw"
+
+# no curation
+# db_location = "./open_access_with_ranking_db"
+# collection_name = "first_collection"
 pdf_directories = [
                    "../data/openaccess_Duong/Adv_Food_Mycology/", 
                    "../data/openaccess_Duong/Ant_Leeuwenhoek/",
@@ -38,6 +47,32 @@ def get_vectorstore():
         )
     return vector_store
 
+def rerank(doc: Document, score: float) -> float:
+    """Rank the document based on its metadata and score."""
+    rank = doc.metadata.get("rank", 0)
+    year = doc.metadata.get("year", 0)
+    res = score + rank + (year / 10000.0)
+    #print(f"\n{score} + {rank} + ({year} / 10000.0) =  {res}\n")
+    return res
+
+def retrieve_documents(vector_store, query: str, k: int = 10) -> List[Document]:
+    """Retrieve documents from the vector store based on a query."""    
+    return vector_store.similarity_search(query, k=k)
+
+
+def retrieve_documents_and_rank(vector_store, query: str, k: int = 10) -> List[Document]:
+    """Retrieve documents from the vector store based on a query."""    
+    results = vector_store.similarity_search_with_relevance_scores(query, k=k)    
+    ranks = [rerank(doc, score) for doc, score in results]
+    docs = [doc for doc, _ in results]
+    # Add index as tiebreaker to avoid comparing Document objects
+    sorted_docs = sorted(zip(ranks, range(len(docs)), docs), reverse=True, key=lambda x: x[0])
+    #print("\n\nSorted documents based on rank:\n")
+    #for rank, _, doc in sorted_docs:
+    #    print(f"{doc}\n{rank}\n\n")
+    ranked_docs = [doc for _, _, doc in sorted_docs]
+    return ranked_docs
+
 def shorten_author_list(author: str) -> str:
     """Shorten the author list to a maximum of 3 authors."""
     authors = author.split(", ")
@@ -50,7 +85,7 @@ def get_citations(docs: List[Document]):
     citations = []
     files = set()
     for doc in docs:
-        source = doc.metadata["source"]
+        source = doc.metadata["title"]
         if source not in files:
             files.add(source)
             citations.append(doc.metadata)
@@ -100,52 +135,67 @@ def load_data(csv_path):
                 if not loader:
                     print(f"Error file not found {row[0]}")
                     continue
-                #print("Loading file: " + pdf_directory + row[0])
+                
                 data = loader.load()
+                title = row[1].strip()
+                author = row[2].strip()
+                year = int(row[3].strip())
+                journal = row[4].strip()
+                rank = int(row[5].strip())
+                #print(f'"Processing {row[0]} with title "{title}", author "{author}", year "{year}", journal "{journal}", rank {rank}"')
                 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-                chunks = text_splitter.split_documents(data)
+                chunks = text_splitter.split_documents(data)        
                 for chunk in chunks:
-                    chunk.metadata['file_name'] = row[0]
-                    chunk.metadata['title'] = row[1].strip()
-                    chunk.metadata['author'] = row[2].strip()
-                    chunk.metadata['year'] = row[3].strip()
-                    if len(row) > 4: chunk.metadata['journal'] = row[4].strip()
-                    #print("Chunk metadata:", chunk.metadata)            
+                    del(chunk.metadata['source'])
+                    chunk.metadata['title'] = title
+                    chunk.metadata['author'] = author
+                    chunk.metadata['publication year'] = year
+                    chunk.metadata['journal'] = journal
+                    chunk.metadata['rank'] = rank                            
                 vector_store.add_documents(chunks)
                 print("Added " + row[0])    
+                
             except Exception as e:      
                 print(f"Error processing {row[0]}: {e}")
 
+import json
 def read_one_file(file_path):
     """Read a single file and return its content. for testing purposes."""
     try:
         loader = UnstructuredPDFLoader(file_path=file_path)
         data = loader.load()
-        print(data)
-        # text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-        # chunks = text_splitter.split_documents(data)
-        # return chunks
+        #print(data)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+        chunks = text_splitter.split_documents(data)        
+        print(chunks[0])
     except Exception as e:
         print(f"Error reading file {file_path}: {e}")
         return []
 
-if __name__ == "__main__":
-    #csv_file = "openaccess_metadata_000_100.csv"
-    #csv_file = "openaccess_metadata_101_200.csv"
-    #csv_file = "openaccess_metadata_201_300.csv"
-    #csv_file = "openaccess_metadata_301_400.csv"
-    #csv_file = "openaccess_metadata_401_476.csv"
-    #csv_file = "openaccess_missing.csv"
-    
-    #check the csv file if the content is correct
-    #test_csv(csv_file)
+def chunk_to_snippet(chunk, metadata):
+    """Convert a chunk to a Document with metadata."""
+    if "Table" in str(type(chunk)):        
+        text = chunk.metadata.text_as_html
+        metadata["chunk_type"] = "Table"
+    else:
+        text = chunk.text
+        metadata["chunk_type"] = "Text"
 
+    return Document(
+        page_content=text,
+        metadata=metadata
+    )
+
+if __name__ == "__main__":
+    #csv_file = "openaccess_metadata.csv"
     #load_data(csv_file)
 
-    print("Openaccess db fully loaded. Checking database...")
-    check_db()
+    #print("Openaccess db fully loaded. Checking database...")
+    #check_db()
 
     # testonly read one file to check its content
-    #read_one_file("../data/openaccess_Duong/Studies_in_Mycology/Vol93Art1_Taxonomy_of_Aspergillus_section_Flavi_and_their_production_of_aflatoxins,_ochratoxins_and_other_mycotoxins.pdf")
+    read_one_file("../data/openaccess_Duong/Studies_in_Mycology/Vol93Art1_Taxonomy_of_Aspergillus_section_Flavi_and_their_production_of_aflatoxins,_ochratoxins_and_other_mycotoxins.pdf")
 
-    
+    #vector_store = get_vectorstore()
+    #retrieve_documents_and_rank(vector_store, "What is an extrolite?") #very weird snippets. should look into why this happens
+

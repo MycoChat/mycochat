@@ -54,9 +54,11 @@ tell me about Aspergillus flsdfgsdavus
 
 Expected: 
 Sidebar: blank
-Chat: No results found MycoBank and none from RAG, either.
+Chat: "I found no answer based on ...."
 
 ## 3A. RAG only question   positive
+Which species produce aflatoxin B?
+
 Expected: 
 Sidebar: blank
 Chat: answer and sources
