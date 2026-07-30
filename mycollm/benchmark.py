@@ -10,16 +10,21 @@ from pathlib import Path
 from langchain_core.documents import Document
 from typing_extensions import List
 
-from mycollm.utils.retrieve import get_vectorstore, shorten_author_list, get_citations, retrieve_documents
+from mycollm.db.retrieve import get_vectorstore
 from mycollm.conversation_graph import PrioritizedGraph
 import json
 
+WITH_SPECIES_SEARCH = True    # False: answers based on paper collection ONLY;  True: prioritize Taxonomy database
 BENCHMARK_QUESTION_FILE = "benchmark_questions.json"
-WITH_SPECIES_SEARCH = False    # False: answers based on paper collection ONLY;  True: prioritize Taxonomy database
-OUTPUT_DIR = "benchmark_results_wo_species_search"
 LLMs = ["llama3.2", "gemma2:2b", "qwen2.5:3b"]
 AnswersPerQuestion = 5  # Default number of answers per question, should be 5
 DB_COLLECTION_NAME = "aspergillus_500_no_table_heading"  # lightweight version of the collection with breadcrumbs instead of full document titles   
+#DB_COLLECTION_NAME = "aspergillus_1500"  
+# OUTPUT_DIR = f"benchmark_results/{DB_COLLECTION_NAME}/mycobase_{WITH_SPECIES_SEARCH}"
+OUTPUT_DIR = "tmp"
+
+CSV_PATH = f"{OUTPUT_DIR}/csv"
+SOURCES_PATH = f"{OUTPUT_DIR}/sources"
 
 vector_store = get_vectorstore(DB_COLLECTION_NAME)
 chats = [PrioritizedGraph(model=llm, vector_store=vector_store, with_searchSpecies=WITH_SPECIES_SEARCH) for llm in LLMs]
@@ -66,7 +71,11 @@ def generate_answers_for_one_question(question):
 
 def generate_answers(ids: List[int] = None):
     questions = load_questions_from_file(BENCHMARK_QUESTION_FILE)
-    
+    dir_path = Path(CSV_PATH)
+    dir_path.mkdir(parents=True, exist_ok=True)
+    dir_path = Path(SOURCES_PATH)
+    dir_path.mkdir(parents=True, exist_ok=True)
+
     for item in questions:
         if ids is not None and item['id'] not in ids:
             continue  # Skip questions not in the specified list of IDs
@@ -74,7 +83,7 @@ def generate_answers(ids: List[int] = None):
         print(f"\nQuestion {item['id']}: {question}")        
         result = generate_answers_for_one_question(question)                
         
-        out_file = f"{OUTPUT_DIR}/csv/Question_{item['id']}_Answers.csv"
+        out_file = f"{CSV_PATH}/Question_{item['id']}_Answers.csv"
         with open(out_file, "w", newline="", encoding="utf-8") as file:
             csv.writer(file).writerow(["Answer #", f"Question: {question}", "Faithfulness", "Answer Relevance", "Completeness", "Conciseness", "Comments"])
             csv.writer(file).writerows([(idx + 1), item] for idx, item in enumerate(result["answers"]))
@@ -82,7 +91,7 @@ def generate_answers(ids: List[int] = None):
         print(f"Result written to {out_file}")
 
         for idx, docs in enumerate(result["snippets"]):            
-            out_file = f"{OUTPUT_DIR}/csv/Sources_Question_{item['id']}_Answer_{idx + 1}.txt"
+            out_file = f"{SOURCES_PATH}/Sources_Question_{item['id']}_Answer_{idx + 1}.txt"
             with open(out_file, "w", encoding="utf-8") as file:
                 file.write(f"Question: {question}\n")
                 file.write(f"Sources of Answer #{idx + 1}\n")
@@ -96,4 +105,4 @@ def generate_answers(ids: List[int] = None):
 if __name__ == "__main__":       
     print("Read main function for sample usage")
     generate_answers()  # no arguments, generate answers for all questions
-    #generate_answers([1]) # generate answers for specific questions by their IDs
+    #generate_answers([1, 16]) # generate answers for specific questions by their IDs

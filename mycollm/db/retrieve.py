@@ -5,7 +5,7 @@ from langchain_core.documents import Document
 import os
 os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
 
-db_directory = "/data/storage-llm/myco-chat/mycollm/db/aspergillus/"
+db_directory = "./aspergillus/"
 embeddings_model = "nomic-embed-text"
 
 def get_vectorstore(collection_name): 
@@ -52,17 +52,6 @@ def test_retrieve_documents():
         print(f"Content: {doc.page_content}")  
         print("-" * 80)  
 
-if __name__ == "__main__":
-    #csv_file = "openaccess_metadata.csv"
-    #load_data(csv_file)
-
-    #print("Openaccess db fully loaded. Checking database...")
-    #check_db()
-
-    # testonly read one file to check its content
-    # read_one_file("../data/openaccess_Duong/Studies_in_Mycology/Vol93Art1_Taxonomy_of_Aspergillus_section_Flavi_and_their_production_of_aflatoxins,_ochratoxins_and_other_mycotoxins.pdf")
-
-    #vector_store = get_vectorstore()
-    #retrieve_documents_and_rank(vector_store, "What is an extrolite?") #very weird snippets. should look into why this happens
+if __name__ == "__main__":    
     print("hello world")    
     test_retrieve_documents()

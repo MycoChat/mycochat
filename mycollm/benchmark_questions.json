@@ -2,7 +2,7 @@
 {   "id": 1,
     "Q": "Which mycotoxin is produced by Penicillium nordicum?",
     "A": "Ochratoxin A.",
-    "In": "Cover CBS lab Man 2.pdf.md, page 320"
+    "In": "MycoBank"
 },
 {
     "id": 2,
@@ -69,9 +69,9 @@
 },
 {
     "id": 13,
-    "Q": "Give me the reference sequences of Aspergillus section Terrei as fasta file. Compile the fasta name as follows: starting with the species name, followed by the GenBank accession number and strain number",
-    "A": "A list of fasta files of Aspergillus section Terrei species is expected.",
-    "In": ""
+    "Q": "Give me the strains and GenBank accession numbers of Aspergillus allahabadii.",
+    "A": "",
+    "In": "MycoBank"
 },
 {
     "id": 14,
@@ -111,7 +111,7 @@
 {
     "id": 20,
     "Q": "Which extrolites are produced by Aspergillus persii?",
-    "A": "Aspergamices, aspochracins, aurantiamin, cyclopenols, mellamide, mevinolin, neohydroxyaspergillic acids, ochratoxin (weak to absent) penicillic acid, petromurins, xanthomegnins"
+    "A": "Aspergamices, aspochracins, aurantiamin, cyclopenols, mellamide, mevinolin, neohydroxyaspergillic acids, ochratoxin (weak to absent) penicillic acid, petromurins, xanthomegnins",
+    "In": "MycoBank"
 }
-
 ]

@@ -3,15 +3,14 @@ import ast
 import ollama
 from typing import Dict, Callable
 
-from mycollm.utils.retrieve import get_vectorstore, shorten_author_list, get_citations
+from mycollm.db.retrieve import get_vectorstore, shorten_author_list, get_citations
 from mycoid.tools.search_dna import search_DNA, is_good_DNA_sequence, dna_search_tool
-from mycobase.tools.search_species import search_SpeciesDescription, species_search_tool
+from mycobase.search_species import search_SpeciesDescription, species_search_tool
 from mycollm.conversation_graph import PrioritizedGraph
 
 version = "dev"
 DB_COLLECTION_NAME = "aspergillus_500_no_table_heading"
-#CHAT_MODEL = "llama3.2" 
-CHAT_MODEL = "gemma2:2b"
+CHAT_MODEL = "llama3.2" #"gemma2:2b"
 
 
 available_functions: Dict[str, Callable] = {
@@ -104,9 +103,9 @@ def get_dna_search_response(user_question, search_result):
     return response['message']['content']
 
 def compose_sources(sources):    
-    print(sources)
+    #print(sources)
     citations = get_citations(sources)    
-    print(citations)    
+    #print(citations)    
     s = "\n- ".join(
         f"{shorten_author_list(citation['author'])}, {citation['title']}, {citation['publication year']}"
         for citation in citations)

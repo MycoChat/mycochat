@@ -13,7 +13,7 @@ from langchain_core.documents import Document
 from langgraph.graph import START, StateGraph
 from typing_extensions import List, TypedDict
 
-from .retrieve import get_vectorstore, shorten_author_list, get_citations, retrieve_documents
+from ..db.retrieve import get_vectorstore, shorten_author_list, get_citations, retrieve_documents
 
 import argparse
 

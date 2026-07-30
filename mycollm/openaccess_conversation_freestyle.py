@@ -36,6 +36,22 @@ system_prompt = (
     "{context}"
 )
 
+# system_prompt = (
+#     "You are a scientific assistant answering questions using ONLY the provided research-paper snippets.\n\n"
+#     "Rules:\n"
+#     "1. Base your answer solely on the snippets below. Do NOT use prior or external "
+#     "knowledge, and do not rely on what you may already know.\n"
+#     "2. Do not guess or invent anything. Every species name, number, and reference "
+#     "in your answer must appear in the snippets. If a detail is not in the snippets, "
+#     "do not state it.\n"
+#     "3. If the snippets do not contain enough information to answer the question, "
+#     "reply with exactly this sentence and nothing else: "
+#     "'I found no answer based on the paper collection'.\n"
+#     "4. Answer only what is asked, concisely and precisely.\n\n"
+#     "Snippets:\n{context}"
+# )
+
+
 prompt = ChatPromptTemplate.from_messages(
     [
         ("system", system_prompt),
@@ -63,17 +79,40 @@ def retrieve(state: State):
     retrieved_docs = retrieve_documents_and_rank(vector_store, state["question"], k=10)      
     return {"context": retrieved_docs}
 
+# def generate(state: State):
+#     retrieved_docs = state["context"]
+#     retrieved_docs = []	
+#     dict_context = state.get("dict_context", "")
+#     if dict_context!="":
+#         dict_doc = Document(
+#         					page_content=dict_context,
+#         					metadata={"title": "MycoChat's database","content_type": "database", "author": "Jos Houbraken & Duong Vu", "publication year": "2026"})
+#         retrieved_docs.append(dict_doc)
+#     formatted_docs = "\n\n".join(doc.page_content for doc in retrieved_docs)
+#     messages = prompt.invoke({"question": state["question"], "context": formatted_docs})  	  
+#     response = llm.invoke(messages)
+    
+#     return {"answer": response}
+
 def generate(state: State):
-    retrieved_docs = state["context"]
+    #look for the response from MycoBase
+    retrieved_docs = []	
     dict_context = state.get("dict_context", "")
     if dict_context!="":
         dict_doc = Document(
         					page_content=dict_context,
-        					metadata={"title": "MycoChat's database","content_type": "database", "author": "Jos Houbraken & Duong Vu", "publication year": "2026"})
+        					metadata={"title": "MycoChat: An Open-Source Retrieval-Augmented Framework Integrating Species Identification and Curated Taxonomic Knowledge","content_type": "paper", "author": "Duong Vu, Chau Tran, Thang Pham, Jos Houbraken", "publication year": "2026"})
         retrieved_docs.append(dict_doc)
     formatted_docs = "\n\n".join(doc.page_content for doc in retrieved_docs)
+    messages = prompt.invoke({"question": state["question"], "context": formatted_docs})
+    response = llm.invoke(messages)  	  
+    if "I don't know" not in response.content and "not found" not in response.content.lower():
+        return {"answer": response, "context": retrieved_docs}
+    retrieved_docs = state["context"]
+    formatted_docs = "\n\n".join(doc.page_content for doc in retrieved_docs)
     messages = prompt.invoke({"question": state["question"], "context": formatted_docs})  	  
-    response = llm.invoke(messages)    
+    response = llm.invoke(messages)     
+    
     return {"answer": response}
 
 def get_conversation_graph():

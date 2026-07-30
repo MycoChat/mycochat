@@ -206,6 +206,8 @@ if __name__ == "__main__":
 
     #create_db(csv_path, md_directory_curated, "aspergillus_500_light_breadcrumbs", recursive_splitter_500, remove_existing=True)     
 
-    create_db(csv_path, md_directory_curated, aspergillus_curated_500_no_table_heading, recursive_splitter_500, remove_existing=True)     
+    #DONE
+    #create_db(csv_path, md_directory_curated, aspergillus_curated_500_no_table_heading, recursive_splitter_500, remove_existing=True)     
+    create_db(csv_path, md_directory_curated, aspergillus_curated_1500, recursive_splitter_1500, remove_existing=True)  
         
     

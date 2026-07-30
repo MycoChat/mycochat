@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 script_dir = Path(__file__).resolve().parent
-SPECIES_DESCRIPTION_FILE = script_dir / ".." / "species_description.json"
+SPECIES_DESCRIPTION_FILE = script_dir / "data" / "species_description.json"
 
 def search_SpeciesDescription(speciesname):
 	"""

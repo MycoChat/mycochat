@@ -28,7 +28,7 @@ def search_DNA(sequence):
     # Duong's DNA sequence identification
     dnabarcoder_out=tempfile.mkdtemp(prefix = "dnabarcoder_output_")
     nproc=multiprocessing.cpu_count()
-    classification_result=classifyAgainstReferenceSet(sequence, references_path, "id", dnabarcoder_out, nproc)    
+    classification_result=classifyAgainstReferenceSet(sequence, references_path, "id", dnabarcoder_out, nproc)   
     os.system("rm -r " + dnabarcoder_out)
     return classification_result["query"]
 
