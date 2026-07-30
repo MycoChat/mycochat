@@ -1,4 +1,12 @@
-# Byte-compiled / optimized / DLL files
+test_chunking/
+test_chunking_by_retrieval/
+test_misc/
+out/
+out_full_paper/
+aidscripts
+dnabarcoder_out/
+
+\# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
 *$py.class
