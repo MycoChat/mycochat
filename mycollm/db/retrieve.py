@@ -15,7 +15,6 @@ def get_vectorstore(collection_name):
             persist_directory=db_directory + collection_name,
             embedding_function=OllamaEmbeddings(model=embeddings_model)
         )
-    print(vector_store)
     return vector_store
 
 def retrieve_documents(vector_store, query: str, k: int = 10) -> List[Document]:
