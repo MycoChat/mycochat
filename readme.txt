@@ -1,4 +1,21 @@
 
+#install environment 
+sudo apt install python3.12-venv
+
+#install blastn
+sudo apt update
+sudo apt install ncbi-blast+
+
+#install ollama
+curl -fsSL https://ollama.com/install.sh | sh
+ollama pull gemma2:2b
+ollama pull nomic-embed-text
+
+#create a working environment
+python3 -m venv .venv
+source .venv/bin/activate
+#run this only once
+pip install -r requirements.txt 
 ================================
 
 1. How to run in a ssh terminal:
