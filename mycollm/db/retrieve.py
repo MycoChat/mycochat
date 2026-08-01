@@ -5,7 +5,7 @@ from langchain_core.documents import Document
 import os
 os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
 
-db_directory = "./aspergillus/"
+db_directory = "mycollm/db/aspergillus/"
 embeddings_model = "nomic-embed-text"
 
 def get_vectorstore(collection_name): 
@@ -15,6 +15,7 @@ def get_vectorstore(collection_name):
             persist_directory=db_directory + collection_name,
             embedding_function=OllamaEmbeddings(model=embeddings_model)
         )
+    print(vector_store)
     return vector_store
 
 def retrieve_documents(vector_store, query: str, k: int = 10) -> List[Document]:
