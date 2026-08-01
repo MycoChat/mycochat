@@ -1,0 +1,474 @@
+{
+    "Aspergillus steynii": [
+        "Aspergillus steynii",
+        "Aspergillus elegans"
+    ],
+    "Aspergillus elegans": [
+        "Aspergillus steynii",
+        "Aspergillus elegans"
+    ],
+    "Aspergillus oryzae": [
+        "Aspergillus oryzae",
+        "Aspergillus flavus"
+    ],
+    "Aspergillus flavus": [
+        "Aspergillus oryzae",
+        "Aspergillus flavus"
+    ],
+    "Aspergillus parasiticus": [
+        "Aspergillus parasiticus",
+        "Aspergillus sojae"
+    ],
+    "Aspergillus sojae": [
+        "Aspergillus parasiticus",
+        "Aspergillus sojae"
+    ],
+    "Aspergillus pseudocaelatus": [
+        "Aspergillus pseudocaelatus",
+        "Aspergillus caelatus"
+    ],
+    "Aspergillus caelatus": [
+        "Aspergillus pseudocaelatus",
+        "Aspergillus caelatus"
+    ],
+    "Aspergillus pseudonomiae": [
+        "Aspergillus pseudonomiae",
+        "Aspergillus nomiae"
+    ],
+    "Aspergillus nomiae": [
+        "Aspergillus pseudonomiae",
+        "Aspergillus nomiae"
+    ],
+    "Aspergillus iizukae": [
+        "Aspergillus iizukae",
+        "Aspergillus iizukae capensis"
+    ],
+    "Aspergillus iizukae capensis": [
+        "Aspergillus iizukae",
+        "Aspergillus iizukae capensis"
+    ],
+    "Aspergillus niger welwitschiae": [
+        "Aspergillus niger welwitschiae",
+        "Aspergillus niger",
+        "Aspergillus niger vinaceus"
+    ],
+    "Aspergillus niger": [
+        "Aspergillus niger welwitschiae",
+        "Aspergillus niger",
+        "Aspergillus niger vinaceus"
+    ],
+    "Aspergillus niveus": [
+        "Aspergillus niveus",
+        "Aspergillus carneus"
+    ],
+    "Aspergillus carneus": [
+        "Aspergillus niveus",
+        "Aspergillus carneus"
+    ],
+    "Aspergillus alabamensis marneyi": [
+        "Aspergillus alabamensis marneyi",
+        "Aspergillus alabamensis"
+    ],
+    "Aspergillus alabamensis": [
+        "Aspergillus alabamensis marneyi",
+        "Aspergillus alabamensis"
+    ],
+    "Aspergillus alabamensis aurantiosulcatus": [
+        "Aspergillus alabamensis aurantiosulcatus",
+        "Aspergillus cf alabamensis"
+    ],
+    "Aspergillus cf alabamensis": [
+        "Aspergillus alabamensis aurantiosulcatus",
+        "Aspergillus cf alabamensis"
+    ],
+    "Aspergillus quadrilineatus": [
+        "Aspergillus quadrilineatus",
+        "Aspergillus desertorum"
+    ],
+    "Aspergillus desertorum": [
+        "Aspergillus quadrilineatus",
+        "Aspergillus desertorum"
+    ],
+    "Aspergillus pachycristatus": [
+        "Aspergillus pachycristatus",
+        "Aspergillus rugulosus"
+    ],
+    "Aspergillus rugulosus": [
+        "Aspergillus pachycristatus",
+        "Aspergillus rugulosus"
+    ],
+    "Aspergillus rambellii": [
+        "Aspergillus rambellii",
+        "Aspergillus ochraceoroseus"
+    ],
+    "Aspergillus ochraceoroseus": [
+        "Aspergillus rambellii",
+        "Aspergillus ochraceoroseus"
+    ],
+    "Aspergillus creber jensenii": [
+        "Aspergillus creber jensenii",
+        "Aspergillus creber",
+        "Aspergillus creber tennesseensis"
+    ],
+    "Aspergillus creber": [
+        "Aspergillus creber jensenii",
+        "Aspergillus creber",
+        "Aspergillus creber tennesseensis"
+    ],
+    "Aspergillus creber tennesseensis": [
+        "Aspergillus creber jensenii",
+        "Aspergillus creber",
+        "Aspergillus creber tennesseensis"
+    ],
+    "Aspergillus pseudodeflectus": [
+        "Aspergillus pseudodeflectus",
+        "Aspergillus calidoustus"
+    ],
+    "Aspergillus calidoustus": [
+        "Aspergillus pseudodeflectus",
+        "Aspergillus calidoustus"
+    ],
+    "Monascus ruber pilosus": [
+        "Monascus ruber pilosus",
+        "Monascus ruber"
+    ],
+    "Monascus ruber": [
+        "Monascus ruber pilosus",
+        "Monascus ruber"
+    ],
+    "Penicillium glabrum tannophilum": [
+        "Penicillium glabrum tannophilum",
+        "Penicillium glabrum"
+    ],
+    "Penicillium glabrum": [
+        "Penicillium glabrum tannophilum",
+        "Penicillium glabrum"
+    ],
+    "Penicillium fuscum lapatayae": [
+        "Penicillium fuscum lapatayae",
+        "Penicillium fuscum"
+    ],
+    "Penicillium fuscum": [
+        "Penicillium fuscum lapatayae",
+        "Penicillium fuscum"
+    ],
+    "Penicillium subspinulosum tangii": [
+        "Penicillium subspinulosum tangii",
+        "Penicillium subspinulosum"
+    ],
+    "Penicillium subspinulosum": [
+        "Penicillium subspinulosum tangii",
+        "Penicillium subspinulosum"
+    ],
+    "Penicillium malacaense capsulatum": [
+        "Penicillium malacaense capsulatum",
+        "Penicillium malacaense"
+    ],
+    "Penicillium malacaense": [
+        "Penicillium malacaense capsulatum",
+        "Penicillium malacaense"
+    ],
+    "Penicillium sumatraense jenningsiae": [
+        "Penicillium sumatraense jenningsiae",
+        "Penicillium sumatraense"
+    ],
+    "Penicillium sumatraense": [
+        "Penicillium sumatraense jenningsiae",
+        "Penicillium sumatraense"
+    ],
+    "Penicillium momoi": [
+        "Penicillium momoi",
+        "Penicillium consobrinum"
+    ],
+    "Penicillium consobrinum": [
+        "Penicillium momoi",
+        "Penicillium consobrinum"
+    ],
+    "Penicillium levitum": [
+        "Penicillium levitum",
+        "Penicillium coeruleum"
+    ],
+    "Penicillium coeruleum": [
+        "Penicillium levitum",
+        "Penicillium coeruleum"
+    ],
+    "Penicillium mariae-crucis": [
+        "Penicillium mariae-crucis",
+        "Penicillium mariaecrucis"
+    ],
+    "Penicillium mariaecrucis": [
+        "Penicillium mariae-crucis",
+        "Penicillium mariaecrucis"
+    ],
+    "Penicillium wulientehii": [
+        "Penicillium wulientehii",
+        "Penicillium herquei",
+        "Penicillium cf herquei"
+    ],
+    "Penicillium herquei": [
+        "Penicillium wulientehii",
+        "Penicillium herquei",
+        "Penicillium cf herquei"
+    ],
+    "Penicillium cf herquei": [
+        "Penicillium wulientehii",
+        "Penicillium herquei",
+        "Penicillium cf herquei"
+    ],
+    "Penicillium cf janczewskii": [
+        "Penicillium cf janczewskii",
+        "Penicillium nigricans"
+    ],
+    "Penicillium nigricans": [
+        "Penicillium cf janczewskii",
+        "Penicillium nigricans"
+    ],
+    "Penicillium cf murcianum": [
+        "Penicillium cf murcianum",
+        "Penicillium radiatolobatum"
+    ],
+    "Penicillium radiatolobatum": [
+        "Penicillium cf murcianum",
+        "Penicillium radiatolobatum"
+    ],
+    "Penicillium chrysogenum camerunense": [
+        "Penicillium chrysogenum camerunense",
+        "Penicillium chrysogenum"
+    ],
+    "Penicillium chrysogenum": [
+        "Penicillium chrysogenum camerunense",
+        "Penicillium chrysogenum"
+    ],
+    "Penicillium camemberti": [
+        "Penicillium camemberti",
+        "Penicillium biforme",
+        "Penicillium caseifulvum",
+        "Penicillium commune",
+        "Penicillium fuscoglaucum"
+    ],
+    "Penicillium biforme": [
+        "Penicillium camemberti",
+        "Penicillium biforme",
+        "Penicillium caseifulvum",
+        "Penicillium commune",
+        "Penicillium fuscoglaucum"
+    ],
+    "Penicillium caseifulvum": [
+        "Penicillium camemberti",
+        "Penicillium biforme",
+        "Penicillium caseifulvum",
+        "Penicillium commune",
+        "Penicillium fuscoglaucum"
+    ],
+    "Penicillium commune": [
+        "Penicillium camemberti",
+        "Penicillium biforme",
+        "Penicillium caseifulvum",
+        "Penicillium commune",
+        "Penicillium fuscoglaucum"
+    ],
+    "Penicillium fuscoglaucum": [
+        "Penicillium camemberti",
+        "Penicillium biforme",
+        "Penicillium caseifulvum",
+        "Penicillium commune",
+        "Penicillium fuscoglaucum"
+    ],
+    "Penicillium solitum pacificasedimenti": [
+        "Penicillium solitum pacificasedimenti",
+        "Penicillium solitum"
+    ],
+    "Penicillium solitum": [
+        "Penicillium solitum pacificasedimenti",
+        "Penicillium solitum"
+    ],
+    "Penicillium hesseltinei undescribed": [
+        "Penicillium hesseltinei undescribed",
+        "Penicillium hesseltinei"
+    ],
+    "Penicillium hesseltinei": [
+        "Penicillium hesseltinei undescribed",
+        "Penicillium hesseltinei"
+    ],
+    "Penicillium rivulorum": [
+        "Penicillium rivulorum",
+        "Penicillium jamesonlandense"
+    ],
+    "Penicillium jamesonlandense": [
+        "Penicillium rivulorum",
+        "Penicillium jamesonlandense"
+    ],
+    "Penicillium kojigenum": [
+        "Penicillium kojigenum",
+        "Penicillium lanosum"
+    ],
+    "Penicillium lanosum": [
+        "Penicillium kojigenum",
+        "Penicillium lanosum"
+    ],
+    "Penicillium keayae": [
+        "Penicillium keayae",
+        "Penicillium compactum"
+    ],
+    "Penicillium compactum": [
+        "Penicillium keayae",
+        "Penicillium compactum"
+    ],
+    "Penicillium roqueforti": [
+        "Penicillium roqueforti",
+        "Penicillium mediterraneum"
+    ],
+    "Penicillium mediterraneum": [
+        "Penicillium roqueforti",
+        "Penicillium mediterraneum"
+    ],
+    "Talaromyces nanjingensis": [
+        "Talaromyces nanjingensis",
+        "Talaromyces brevis"
+    ],
+    "Talaromyces brevis": [
+        "Talaromyces nanjingensis",
+        "Talaromyces brevis"
+    ],
+    "Talaromyces funiculosus pseudofuniculosus": [
+        "Talaromyces funiculosus pseudofuniculosus",
+        "Talaromyces funiculosus"
+    ],
+    "Talaromyces funiculosus": [
+        "Talaromyces funiculosus pseudofuniculosus",
+        "Talaromyces funiculosus"
+    ],
+    "Talaromyces lentulus santanderensis nom inval": [
+        "Talaromyces lentulus santanderensis nom inval",
+        "Talaromyces lentulus"
+    ],
+    "Talaromyces lentulus": [
+        "Talaromyces lentulus santanderensis nom inval",
+        "Talaromyces lentulus"
+    ],
+    "Talaromyces penicillioides rosorhizae": [
+        "Talaromyces penicillioides rosorhizae",
+        "Talaromyces penicillioides"
+    ],
+    "Talaromyces penicillioides": [
+        "Talaromyces penicillioides rosorhizae",
+        "Talaromyces penicillioides"
+    ],
+    "Talaromyces veerkampii": [
+        "Talaromyces veerkampii",
+        "Talaromyces taiwanensis"
+    ],
+    "Talaromyces taiwanensis": [
+        "Talaromyces veerkampii",
+        "Talaromyces taiwanensis"
+    ],
+    "Talaromyces diversus": [
+        "Talaromyces diversus",
+        "Talaromyces diversus peaticola"
+    ],
+    "Talaromyces diversus peaticola": [
+        "Talaromyces diversus",
+        "Talaromyces diversus peaticola"
+    ],
+    "Aspergillus terreus": [
+        "Aspergillus terreus",
+        "Aspergillus montoensis"
+    ],
+    "Aspergillus montoensis": [
+        "Aspergillus terreus",
+        "Aspergillus montoensis"
+    ],
+    "Penicillium bialowiezense": [
+        "Penicillium bialowiezense",
+        "Penicillium anthracinoglaciei"
+    ],
+    "Penicillium anthracinoglaciei": [
+        "Penicillium bialowiezense",
+        "Penicillium anthracinoglaciei"
+    ],
+    "Penicillium chermesinum vietnamense": [
+        "Penicillium chermesinum vietnamense",
+        "Penicillium chermesinum"
+    ],
+    "Penicillium chermesinum": [
+        "Penicillium chermesinum vietnamense",
+        "Penicillium chermesinum"
+    ],
+    "Penicillium hepuense": [
+        "Penicillium hepuense",
+        "Penicillium hepuense ucsense"
+    ],
+    "Penicillium hepuense ucsense": [
+        "Penicillium hepuense",
+        "Penicillium hepuense ucsense"
+    ],
+    "Aspergillus niger vinaceus": [
+        "Aspergillus niger welwitschiae",
+        "Aspergillus niger",
+        "Aspergillus niger vinaceus"
+    ],
+    "Talaromyces potiguarorum": [
+        "Talaromyces potiguarorum",
+        "Talaromyces cavernicola"
+    ],
+    "Talaromyces cavernicola": [
+        "Talaromyces potiguarorum",
+        "Talaromyces cavernicola"
+    ],
+    "Penicillium nordicum": [
+        "Penicillium nordicum",
+        "Penicillium verrucosum"
+    ],
+    "Penicillium verrucosum": [
+        "Penicillium nordicum",
+        "Penicillium verrucosum"
+    ],
+    "Penicillium fimosum": [
+        "Penicillium fimosum",
+        "Penicillium magnielliptisporum"
+    ],
+    "Penicillium magnielliptisporum": [
+        "Penicillium fimosum",
+        "Penicillium magnielliptisporum"
+    ],
+    "Penicillium heveae": [
+        "Penicillium heveae",
+        "Penicillium yuyongnianii"
+    ],
+    "Penicillium yuyongnianii": [
+        "Penicillium heveae",
+        "Penicillium yuyongnianii"
+    ],
+    "Penicillium yarmokense": [
+        "Penicillium yarmokense",
+        "Penicillium chengkouense"
+    ],
+    "Penicillium chengkouense": [
+        "Penicillium yarmokense",
+        "Penicillium chengkouense"
+    ],
+    "Penicillium expansum": [
+        "Penicillium expansum",
+        "Penicillium websterae"
+    ],
+    "Penicillium websterae": [
+        "Penicillium expansum",
+        "Penicillium websterae"
+    ],
+    "Penicillium retrofuscum nom inval": [
+        "Penicillium retrofuscum nom inval",
+        "Penicillium subasperum"
+    ],
+    "Penicillium subasperum": [
+        "Penicillium retrofuscum nom inval",
+        "Penicillium subasperum"
+    ],
+    "Talaromyces ignescens": [
+        "Talaromyces ignescens",
+        "Talaromyces pseudorugulosus"
+    ],
+    "Talaromyces pseudorugulosus": [
+        "Talaromyces ignescens",
+        "Talaromyces pseudorugulosus"
+    ]
+}

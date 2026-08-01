@@ -1,0 +1,162 @@
+{
+  "species": {
+    "All": {
+      "cut-off": 0.999,
+      "confidence": 0.8705,
+      "sequence number": 3212,
+      "group number": 1205,
+      "min alignment length": 400,
+      "fasta filename": "dnabarcoder/EurotialesITS.diff.fasta",
+      "classification filename": "EurotialesITS.classification",
+      "max proportion": 0.0056,
+      "original cut-off": 0.999,
+      "original confidence": 0.8705,
+      "dataset with max confidence": "All",
+      "original min alignment length": 400
+    },
+    "Aspergillus": {
+      "cut-off": 0.999,
+      "confidence": 0.872,
+      "sequence number": 955,
+      "group number": 358,
+      "min alignment length": 400,
+      "fasta filename": "dnabarcoder/EurotialesITS.diff.fasta",
+      "classification filename": "EurotialesITS.classification",
+      "max proportion": 0.0105,
+      "original cut-off": 0.998,
+      "original confidence": 0.8582,
+      "dataset with max confidence": "Aspergillaceae",
+      "original min alignment length": 400
+    },
+    "Paecilomyces": {
+      "cut-off": 0.993,
+      "confidence": 0.9108,
+      "sequence number": 53,
+      "group number": 17,
+      "min alignment length": 400,
+      "fasta filename": "dnabarcoder/EurotialesITS.diff.fasta",
+      "classification filename": "EurotialesITS.classification",
+      "max proportion": 0.1132,
+      "original cut-off": 0.993,
+      "original confidence": 0.8956,
+      "dataset with max confidence": "Thermoascaceae",
+      "original min alignment length": 400
+    },
+    "Penicillium": {
+      "cut-off": 0.999,
+      "confidence": 0.8847,
+      "sequence number": 1382,
+      "group number": 482,
+      "min alignment length": 400,
+      "fasta filename": "dnabarcoder/EurotialesITS.diff.fasta",
+      "classification filename": "EurotialesITS.classification",
+      "max proportion": 0.013,
+      "original cut-off": 0.999,
+      "original confidence": 0.8847,
+      "dataset with max confidence": "Penicillium",
+      "original min alignment length": 400
+    },
+    "Talaromyces": {
+      "cut-off": 0.998,
+      "confidence": 0.8718,
+      "sequence number": 573,
+      "group number": 224,
+      "min alignment length": 400,
+      "fasta filename": "dnabarcoder/EurotialesITS.diff.fasta",
+      "classification filename": "EurotialesITS.classification",
+      "max proportion": 0.0227,
+      "original cut-off": 0.998,
+      "original confidence": 0.8678,
+      "dataset with max confidence": "Trichocomaceae",
+      "original min alignment length": 400
+    },
+    "Aspergillaceae": {
+      "cut-off": 0.999,
+      "confidence": 0.872,
+      "sequence number": 2426,
+      "group number": 877,
+      "min alignment length": 400,
+      "fasta filename": "dnabarcoder/EurotialesITS.diff.fasta",
+      "classification filename": "EurotialesITS.classification",
+      "max proportion": 0.0074,
+      "original cut-off": 0.999,
+      "original confidence": 0.872,
+      "dataset with max confidence": "Aspergillaceae",
+      "original min alignment length": 400
+    },
+    "Trichocomaceae": {
+      "cut-off": 0.998,
+      "confidence": 0.8718,
+      "sequence number": 612,
+      "group number": 251,
+      "min alignment length": 400,
+      "fasta filename": "dnabarcoder/EurotialesITS.diff.fasta",
+      "classification filename": "EurotialesITS.classification",
+      "max proportion": 0.0212,
+      "original cut-off": 0.998,
+      "original confidence": 0.8718,
+      "dataset with max confidence": "Trichocomaceae",
+      "original min alignment length": 400
+    },
+    "Thermoascaceae": {
+      "cut-off": 0.993,
+      "confidence": 0.9108,
+      "sequence number": 62,
+      "group number": 23,
+      "min alignment length": 400,
+      "fasta filename": "dnabarcoder/EurotialesITS.diff.fasta",
+      "classification filename": "EurotialesITS.classification",
+      "max proportion": 0.0968,
+      "original cut-off": 0.993,
+      "original confidence": 0.9108,
+      "dataset with max confidence": "Thermoascaceae",
+      "original min alignment length": 400
+    }
+  },
+  "genus": {
+    "All": {
+      "cut-off": 0.917,
+      "confidence": 0.6658,
+      "sequence number": 3833,
+      "group number": 25,
+      "min alignment length": 400,
+      "fasta filename": "EurotialesITS.fasta",
+      "classification filename": "EurotialesITS.classification",
+      "max proportion": 0.4592,
+      "original cut-off": 0.917,
+      "original confidence": 0.6658,
+      "dataset with max confidence": "All",
+      "original min alignment length": 400
+    },
+    "Aspergillaceae": {
+      "cut-off": 0.917,
+      "confidence": 0.6658,
+      "sequence number": 3111,
+      "group number": 15,
+      "min alignment length": 400,
+      "fasta filename": "EurotialesITS.fasta",
+      "classification filename": "EurotialesITS.classification",
+      "max proportion": 0.5657,
+      "original cut-off": 0.947,
+      "original confidence": 0.6554,
+      "dataset with max confidence": "All",
+      "original min alignment length": 400
+    }
+  },
+  "family": {
+    "All": {
+      "cut-off": 0.913,
+      "confidence": 0.9475,
+      "sequence number": 3833,
+      "group number": 5,
+      "min alignment length": 400,
+      "fasta filename": "EurotialesITS.fasta",
+      "classification filename": "EurotialesITS.classification",
+      "max proportion": 0.8116,
+      "original cut-off": 0.913,
+      "original confidence": 0.9475,
+      "dataset with max confidence": "All",
+      "original min alignment length": 400
+    }
+  }
+}
