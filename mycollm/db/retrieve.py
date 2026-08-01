@@ -5,7 +5,7 @@ from langchain_core.documents import Document
 import os
 os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
 
-db_directory = "mycollm/db/aspergillus/"
+db_directory = "mycollm/db/"
 embeddings_model = "nomic-embed-text"
 
 def get_vectorstore(collection_name): 
