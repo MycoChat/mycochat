@@ -33,7 +33,8 @@ AVATARS = {
     "tool": tool_icon,
 }
    
-graph = PrioritizedGraph(model=CHAT_MODEL, vector_store=get_vectorstore(DB_COLLECTION_NAME))
+graph = PrioritizedGraph(model=CHAT_MODEL, vector_store=get_vectorstore(DB_COLLECTION_NAME),
+                         with_searchSpecies=True)
 
 def get_conversation_response(user_question):
     """Handle user input and generate a response."""

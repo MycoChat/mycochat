@@ -122,7 +122,8 @@ class PrioritizedGraph:
         return "retrieve_documents"    # Fallback to documents
 
     def _route_after_generate_answer(self, state: State) -> str:
-        if state["db_context"] is not None and found_no_answer(state["answer"]):
+        #print (f"ROUTING: {found_no_answer(state['answer'].content)}")
+        if state["db_context"] is not None and found_no_answer(state['answer'].content):
             print("Search paper collection")
             return "retrieve_documents"
         return "END"
