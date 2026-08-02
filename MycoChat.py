@@ -56,7 +56,7 @@ def get_conversation_response(user_question):
     return response
 
 def format_search_result(search_result):    
-    print (f"format {st.session_state.species_search_key}")
+    print (f"Mycobase search result: {search_result[:60]}...")
     if isinstance(search_result, str):
         try:
             result_dict = ast.literal_eval(search_result)            
@@ -122,11 +122,10 @@ def register_message(role, content):
         if role == "tool" and st.session_state.species_search_key != None:        
             image_path = get_image_path(st.session_state.species_search_key)
             if image_path != None:
-                st.image(image_path, use_container_width=True)
+                st.image(image_path, width='stretch')
             st.session_state.species_search_key = None
 
-def standardize(search_key: str): #Aspergillus flavus
-    key = search_key.strip()
+def standardize(key: str): #Aspergillus flavus    
     if key[0].islower(): key = key[0].upper() + key[1:]
     if key.startswith('A.'): key = 'Aspergillus' + key[2:]
     return key 
@@ -149,6 +148,9 @@ def handle_search(search_key):
 def handle_user_question(user_question):
     """Handle user input and generate a response."""
 
+    user_question = user_question.strip()
+    print(f"\nUser question: {user_question[:60]}...")
+
     # try DNA search
     if is_good_DNA_sequence(user_question):
         register_message("user", f"DNA search: {user_question[:60]}...")
@@ -158,8 +160,9 @@ def handle_user_question(user_question):
         return
 
     #try species search
-    if len(user_question) < 80:
-        std_search_key = standardize(user_question)        
+    if len(user_question) < 60 and user_question.count(' ') < 2:  # likely a species name
+        std_search_key = standardize(user_question)    
+        print(f"Searching MycoBase for species: {std_search_key}")    
         search_result = str(search_SpeciesDescription(std_search_key))    
         (response, found) = format_search_result(search_result)
         if found:

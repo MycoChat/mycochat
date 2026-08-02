@@ -119,10 +119,10 @@ class PrioritizedGraph:
         # Check if the database provided a satisfactory answer
         if state.get("db_context") is not None:
             return "generate_answer"  # Skip documents, go straight to generation        
+        print("Not found in Mycobase, searching paper collection")
         return "retrieve_documents"    # Fallback to documents
 
-    def _route_after_generate_answer(self, state: State) -> str:
-        #print (f"ROUTING: {found_no_answer(state['answer'].content)}")
+    def _route_after_generate_answer(self, state: State) -> str:        
         if state["db_context"] is not None and found_no_answer(state['answer'].content):
             print("Search paper collection")
             return "retrieve_documents"
@@ -175,6 +175,8 @@ SYNONYM_KEY = "Synonym"
 ACCEPTED_KEY = "is accepted"
 
 def convert_to_string(db_json):    
+    """ Make it more readable for small llm's """
+
     if SPECIES_KEY in db_json:
         name = db_json[SPECIES_KEY]
         
@@ -194,7 +196,7 @@ def convert_to_string(db_json):
 
     return str(db_json)  
 
-# A small Pydantic model for the LLM judge node
+# A small Pydantic model for the LLM judge node. Not usable for small llm's.
 class SufficiencyCheck(BaseModel):
     is_sufficient: bool = Field(description="True if Context answers the question, False otherwise.")
 

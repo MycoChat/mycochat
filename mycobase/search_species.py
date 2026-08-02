@@ -1,8 +1,6 @@
 import json
-from pathlib import Path
 
-script_dir = Path(__file__).resolve().parent
-SPECIES_DESCRIPTION_FILE = script_dir / "data" / "species_description.json"
+SPECIES_DESCRIPTION_FILE = "mycobase/data/species_description.json"
 
 def search_SpeciesDescription(speciesname):
 	"""
@@ -16,7 +14,7 @@ def search_SpeciesDescription(speciesname):
 	"""
     # Duong's species description
     #load species_description_dict
-	with open(SPECIES_DESCRIPTION_FILE, 'r') as f:
+	with open(SPECIES_DESCRIPTION_FILE, 'r', encoding='utf-8') as f:
 		speciesdescriptiondict=json.load(f)
 	speciesdescription={}	
 	if speciesname in speciesdescriptiondict.keys():
@@ -35,7 +33,7 @@ def is_accepted(speciesname):
 	"""
     # Duong's species description
     #load species_description_dict
-	with open(SPECIES_DESCRIPTION_FILE, 'r') as f:
+	with open(SPECIES_DESCRIPTION_FILE, 'r', encoding='utf-8') as f:
 		speciesdescriptiondict=json.load(f)	
 	if speciesname in speciesdescriptiondict.keys():
 		return True
@@ -77,7 +75,7 @@ def search_RelevantSpeciesDescription_json(user_question):
 	"""
     # Duong's species description
     #load species_description_dict
-	with open(SPECIES_DESCRIPTION_FILE, 'r') as f:
+	with open(SPECIES_DESCRIPTION_FILE, 'r', encoding='utf-8') as f:
 		speciesdescriptiondict=json.load(f)
 	
 	for speciesname in speciesdescriptiondict.keys():

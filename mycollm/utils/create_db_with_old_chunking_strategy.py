@@ -12,7 +12,6 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_classic.retrievers.multi_vector import MultiVectorRetriever
 from langchain_classic.retrievers import ContextualCompressionRetriever
 from langchain_classic.retrievers.document_compressors import CrossEncoderReranker
-from langchain_community.cross_encoders import HuggingFaceCrossEncoder
 import csv
 import os
 os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
