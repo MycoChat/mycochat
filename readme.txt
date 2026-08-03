@@ -44,3 +44,18 @@ OpenAccess DB
 
 Unzip r20260729.zip to a directory named r20260729 in mycollm/db/aspergilus
 make sure the path to the file chroma.sqlite3 is  ...mycollm/db/aspergilus/r20260729/chroma.sqlite3
+
+
+
+=====================================
+to add papers to the DB
+
+Input: papers in markdown
+Output: chunks stored in a Chroma db ready to be used by Mycochat.
+- script to create/add to db: mycollm/utils/create_db.py
+edit main() to call create_db() with correct arguments: file list (in .csv), path to md files, path to db file, db name...
+see the .csv template file in the same directory for a sample of file list.
+
+If you what to use a new DB, make sure the following constants are updated.
+- DB_COLLECTION_NAME in MycoChat.py 
+- db_directory in mycollm/db/retrieve.db

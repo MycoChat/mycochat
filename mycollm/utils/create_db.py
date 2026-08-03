@@ -64,6 +64,8 @@ def create_metadata(row):
     return metadata
 
 def create_breadcrumbs(metadata):
+    """Create a full breadcrumb string based on the all headings plus title."""
+
     title = metadata.get("title", "Unknown Document")
     section_l1 = metadata.get("Section_l1", "")
     section_l2 = metadata.get("Section_l2", "")
@@ -77,6 +79,8 @@ def create_breadcrumbs(metadata):
     return breadcrumbs
 
 def create_breadcrumbs_light(metadata):
+    """Create a breadcrumb string based on the all headings."""
+
     title = metadata.get("title", "Unknown Document")
     section_l1 = metadata.get("Section_l1", "")
     section_l2 = metadata.get("Section_l2", "")
@@ -90,18 +94,15 @@ def create_breadcrumbs_light(metadata):
     
     return breadcrumbs
 
-def create_breadcrumbs_light_no_table_heading(metadata):
-    #title = metadata.get("title", "Unknown Document")
-    #section_l1 = metadata.get("Section_l1", "")
+def create_breadcrumbs_lighter(metadata):
+    """Create a breadcrumb string based on the smallest heading."""
+
     section_l2 = metadata.get("Section_l2", "")
     section_l3 = metadata.get("Section_l3", "")
     
     breadcrumbs = ""
     if section_l3: breadcrumbs = section_l3
     elif section_l2: breadcrumbs = section_l2
-    #elif section_l1: breadcrumbs = section_l1
-    #else: breadcrumbs = title 
-    #if breadcrumbs.startswith("Table "): return ""    
     return breadcrumbs
 
 def load_one_file(file_path, metadata, vector_store, recursive_splitter, 
@@ -121,12 +122,13 @@ def load_one_file(file_path, metadata, vector_store, recursive_splitter,
         chunk.metadata.update(metadata)
         #breadcrumbs = create_breadcrumbs(chunk.metadata)            
         #breadcrumbs = create_breadcrumbs_light(chunk.metadata)            
-        breadcrumbs = create_breadcrumbs_light_no_table_heading(chunk.metadata)      
+        breadcrumbs = create_breadcrumbs_lighter(chunk.metadata)      
         if breadcrumbs != "":
             chunk.page_content = f"[{breadcrumbs}]\n{chunk.page_content}"
         if output_chunks: print(chunk.page_content)        
     
-    # Add to vector store, by default, only page_content gets digested for embeddings, metadata is stored separately
+    # Add to vector store in batches, redo one by one in case of failure
+    # set the parameter add_to_vectorstore=False if you just want to see the chunks without adding to the vector store
     if add_to_vectorstore:
         try:
             vector_store.add_documents(final_chunks)
@@ -191,9 +193,10 @@ def test_chunking_results():
     )
 
 if __name__ == "__main__":
+    print("Edit the main function to create db or test .md files")
     #test_chunking_results()
 
-    csv_path = "/data/storage-llm/data/openaccess_Duong/Aspergillus_openaccess_metadata.csv"    
+    #csv_path = "/data/storage-llm/data/openaccess_Duong/Aspergillus_openaccess_metadata.csv"    
     
     # DONE Create db from raw markdown files
     # create_db(csv_path, md_directory_raw, aspergillus_raw_1500, recursive_splitter_1500, remove_existing=True)    
@@ -208,6 +211,6 @@ if __name__ == "__main__":
 
     #DONE
     #create_db(csv_path, md_directory_curated, aspergillus_curated_500_no_table_heading, recursive_splitter_500, remove_existing=True)     
-    create_db(csv_path, md_directory_curated, aspergillus_curated_1500, recursive_splitter_1500, remove_existing=True)  
+    #create_db(csv_path, md_directory_curated, aspergillus_curated_1500, recursive_splitter_1500, remove_existing=True)  
         
     
