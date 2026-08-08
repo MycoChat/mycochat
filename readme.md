@@ -22,6 +22,10 @@ curl -fsSL https://ollama.com/install.sh | sh
 
 ollama pull gemma2:2b
 
+ollama pull llama3.2
+
+ollama pull qwen2.5:3b
+
 ollama pull nomic-embed-text
 
 <b> Create a working environment </b>
@@ -47,34 +51,48 @@ make sure the path to the file chroma.sqlite3 is  ...mycollm/db/r20260729/chroma
 ## Create a new Chroma db 
 
 Input: papers in markdown
+
 Output: chunks stored in a Chroma db ready to be used by Mycochat.
+
 - script to create/add to db: mycollm/utils/create_db.py
+
 edit main() to call create_db() with correct arguments: file list (in .csv), path to md files, path to db file, db name...
+
 see the .csv template file in the same directory for a sample of file list.
 
 If you what to use a new DB, make sure the following constants are updated.
+
 - DB_COLLECTION_NAME in MycoChat.py 
+
 - db_directory in mycollm/db/retrieve.db
 
 ## How to run in a ssh terminal:
 
-At the project directory, where you see this file.
-1.a.Activate virtual environment
+cd mycochat
+
+<b> Activate virtual environment </b>
+
 source .venv/bin/activate
 
-1.b.run the app
+<b> Run the app </b>
+
 streamlit run app.py
 
-it will show something like:
+It will show something like:
+ 
   You can now view your Streamlit app in your browser.
 
   Local URL: http://localhost:8501
+  
   Network URL: http://xxx.xx.xx.xx:8501
+  
   External URL: http://yyy.yy.yy.yy:8501
 
-2. connect using tunnelling
-2.a create tunnel in ANOTHER terminal
+<b> Create tunnel in ANOTHER terminal </b>
+
 ssh -L 8501:localhost:8501 user@yyy.yy.yy.yy
 
-2.b open http://localhost:8501 in a local browser. Don't close the second ssh connection
+<b> Start Local Preview </b>
+
+Open http://localhost:8501 in a local browser. Don't close the second ssh connection
 
