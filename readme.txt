@@ -42,8 +42,10 @@ ssh -L 8501:localhost:8501 tpham@145.38.195.155
 ===============================================
 OpenAccess DB
 
-Unzip r20260729.zip to a directory named r20260729 in mycollm/db/aspergilus
-make sure the path to the file chroma.sqlite3 is  ...mycollm/db/aspergilus/r20260729/chroma.sqlite3
+Download a Chroma db (db.zip) that is ready to use from https://doi.org/10.5281/zenodo.21847490 
+
+Unzip db.zip to a directory named db in mycollm. The final path will be   mycollm/db/r20260729
+make sure the path to the file chroma.sqlite3 is  ...mycollm/db/r20260729/chroma.sqlite3
 
 
 
