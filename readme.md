@@ -7,15 +7,21 @@ git clone https://github.com/MycoChat/mycochat.git
 ## Installation
 
 <b> Install environment if needed </b> 
+
 sudo apt install python3.12-venv
 
 <b> Install blastn, for DNABarcoder, a DNA-based identification used in MycoID </b>
+
 sudo apt update
+
 sudo apt install ncbi-blast+
 
 <b> Install ollama </b>
+
 curl -fsSL https://ollama.com/install.sh | sh
+
 ollama pull gemma2:2b
+
 ollama pull nomic-embed-text
 
 <b> Create a working environment </b>
@@ -23,9 +29,11 @@ ollama pull nomic-embed-text
 cd mycochat
 
 python3 -m venv .venv
+
 source .venv/bin/activate
 
 <b> Install requirements </b>
+
 pip install -r requirements.txt 
 
 
