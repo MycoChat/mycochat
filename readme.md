@@ -1,27 +1,35 @@
 # MycoChat
 
+## Download MycoChat
+
+git clone https://github.com/MycoChat/mycochat.git
+
 ## Installation
 
-#install environment 
+<b> Install environment if needed </b> 
 sudo apt install python3.12-venv
 
-#install blastn
+<b> Install blastn, for DNABarcoder, a DNA-based identification used in MycoID </b>
 sudo apt update
 sudo apt install ncbi-blast+
 
-#install ollama
+<b> Install ollama </b>
 curl -fsSL https://ollama.com/install.sh | sh
 ollama pull gemma2:2b
 ollama pull nomic-embed-text
 
-#create a working environment
+<b> Create a working environment </b>
+
+cd mycochat
+
 python3 -m venv .venv
 source .venv/bin/activate
-#run this only once
-pip install -r requirements.txt 
-================================
 
-## Download a Chroma ready-to-use db
+<b> Install requirements </b>
+pip install -r requirements.txt 
+
+
+## Download a ready-to-use Chroma db
 
 Download a Chroma db (db.zip) that is ready to use from https://doi.org/10.5281/zenodo.21847490 
 
@@ -53,12 +61,12 @@ it will show something like:
   You can now view your Streamlit app in your browser.
 
   Local URL: http://localhost:8501
-  Network URL: http://192.168.2.55:8501
-  External URL: http://145.38.195.155:8501
+  Network URL: http://xxx.xx.xx.xx:8501
+  External URL: http://yyy.yy.yy.yy:8501
 
 2. connect using tunnelling
 2.a create tunnel in ANOTHER terminal
-ssh -L 8501:localhost:8501 tpham@145.38.195.155
+ssh -L 8501:localhost:8501 user@yyy.yy.yy.yy
 
 2.b open http://localhost:8501 in a local browser. Don't close the second ssh connection
 
