@@ -96,3 +96,8 @@ ssh -L 8501:localhost:8501 user@yyy.yy.yy.yy
 
 Open http://localhost:8501 in a local browser. Don't close the second ssh connection
 
+## License
+
+MycoChat is released under the Apache License 2.0.
+
+Copyright © 2026 Westerdijk Fungal Biodiversity Institute / Duong Vu
