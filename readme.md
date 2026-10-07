@@ -76,7 +76,7 @@ source .venv/bin/activate
 
 <b> Run the app </b>
 
-streamlit run app.py
+streamlit run MycoChat.py
 
 It will show something like:
  
